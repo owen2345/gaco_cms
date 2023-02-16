@@ -1,0 +1,19 @@
+-# locals: { record: Page, groups: [FieldGroup] }
+
+- groups.ordered.each do |group|
+  .card.fields-list.mb-4{ 'data-controller': 'gaco-cms-repeatable-field' }
+    .card-header
+      .d-flex.justify-content-between
+        .title
+          %h4= group.title
+          - if group.description.present?
+            .small.italic.text-light= group.description
+        - if group.repeat
+          .btns
+            %small
+              %code.small= "[#{group.key}]"
+            = link_to tpl_gaco_cms_admin_field_group_path(id: group), class: 'btn btn-sm btn-outline-primary', 'data-gaco-cms-repeatable-field-target' => 'button' do
+              %i.fa.fa-plus-square
+    .accordion{ 'data-gaco-cms-repeatable-field-target': 'list' }
+      - (record.field_values.group_nos_for(group).presence || [999]).each do |group_no|
+        = render '/gaco_cms/admin/fields/render/group', group: group, field_values: record.field_values.eager_load(:field), group_no: group_no

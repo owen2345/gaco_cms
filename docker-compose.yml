@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  assets_watcher:
+    tty: true
+    build: .
+    command: sh -c 'yarn install && bin/dev'
+    volumes:
+      - .:/app/
+      - bundler_gems:/usr/local/bundle/
+    environment:
+      RAILS_ENV: test
+
+  test:
+    tty: true
+    build: .
+    command: sh -c 'bundle exec rspec'
+    volumes:
+      - .:/app/
+      - bundler_gems:/usr/local/bundle/
+    environment:
+      RAILS_ENV: test
+    depends_on:
+      - assets_watcher
+
+volumes:
+  bundler_gems:

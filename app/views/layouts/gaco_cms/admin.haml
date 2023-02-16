@@ -1,0 +1,57 @@
+!!!
+%html
+  %head
+    = display_meta_tags site: 'Gaco CMS'
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{:content => "width=device-width,initial-scale=1", :name => "viewport"}/
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag 'gaco_cms'
+    = javascript_include_tag 'gaco_cms'
+    = javascript_tag "window.locale = '#{I18n.locale}'; window.gaco_cms_config = { \"locale\": '#{I18n.locale}', \"locales\": #{GacoCms::Config.locales.to_json}, \"editor_css\": '#{instance_eval(&GacoCms::Config.backend_editor_css)}', upload_path: '#{gaco_cms_admin_upload_file_path(format: :json)}' };";
+
+  %body#body
+    #header
+      -########### Second NavBar
+      %nav.navbar.navbar-expand-lg.shadow.text-white
+        .container
+          %a.navbar-brand.logo.p-0.d-flex{href: gaco_cms_admin_path, style: 'font-size: 32px;'}
+            %span.text-black Gaco
+            %span.text-primary Cms
+          %button.navbar-toggler{"aria-controls" => "navbarSupportedContent", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-bs-target" => "#main_nav_bar", "data-bs-toggle" => "collapse", :type => "button"}
+            %span.fa.fa-bars
+
+          #main_nav_bar.collapse.navbar-collapse.justify-content-end.text-white-50
+            %ul.navbar-nav
+              - GacoCms::PageType.all.title_ordered.each do |ptype|
+                %li.nav-item.dropdown
+                  %button.btn.dropdown-toggle{"data-bs-toggle" => "dropdown", type: "button"}= ptype.title
+                  %ul.dropdown-menu{"aria-labelledby" => "dropdownMenuButton1"}
+                    %li
+                      %a.dropdown-item{href: gaco_cms_admin_page_type_pages_path(page_type_id: ptype)} List
+                    %li
+                      %a.dropdown-item{href: new_gaco_cms_admin_page_type_page_path(page_type_id: ptype)} Add New
+              %li.nav-item
+                .vr.bg-black{ style: 'height: 100%' }
+              %li.nav-item
+                %a.nav-link{href: gaco_cms_admin_page_types_path}= GacoCms::PageType.human_name(count: 2)
+              %li.nav-item
+                %a.nav-link{href: gaco_cms_admin_field_groups_path}= GacoCms::FieldGroup.human_name(count: 2)
+              %li.nav-item
+                %a.nav-link{href: gaco_cms_admin_themes_path}= GacoCms::Theme.human_name(count: 2)
+
+
+    -########## Breadcrumbs
+    #breadcrumb_panel.d-flex.justify-content-end.container.pt-1
+      %nav{style: '--bs-breadcrumb-divider: "»";'}= render '/layouts/gaco_cms/breadcrumb'
+
+    #main-progress-bar.progress.fixed-top.invisible{ style: 'z-index: 99999' }
+      .progress-bar.progress-bar-striped.progress-bar-animated{role: "progressbar", style: "width: 100%"}
+    #toasts.toast-container.position-fixed.p-3.bottom-0.end-0{ style: 'z-index: 99999' }
+      = render '/layouts/gaco_cms/flash_messages'
+
+    #container.container.pt-3
+      = yield
+    = turbo_frame_tag :turbo_frame_none
+
+    = render '/rails_hotreload/stream', custom_style: 'left: 20px; bottom: 20px;'  if Rails.env.development?

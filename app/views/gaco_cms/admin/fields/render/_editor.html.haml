@@ -1,0 +1,3 @@
+-# locals: { value: FieldValue, name: String }
+= fields_for name, value do |f|
+  = f.text_field :value, value: value.value_for_input, class: 'form-control', data: { controller: "#{'gaco-cms-translatable' if value.field.translatable} gaco-cms-editor", height: 200 }

@@ -1,0 +1,24 @@
+-# locals: { group: FieldGroup, field_values: [FieldValue], group_no: Integer }
+- accordion_key = "gaco_cms-field-group#{group.id}-#{group_no}"
+.accordion-item
+  - if group.repeat
+    .accordion-header
+      .accordion-button{'data-bs-target' => "##{accordion_key}", "data-bs-toggle" => "collapse"}
+        = check_box_tag :_destroy, '1', false , 'data-controller': 'gaco-cms-deletable_row', 'data-propagate': '._destroy_field', 'data-hide-closest': '.accordion-item', 'data-hideonly': field_values.for_group(group).where(group_no: group_no).any?
+
+  .accordion-collapse.collapse.show{ id: accordion_key }
+    .accordion-body
+      %ul.list-group.list-group-flush
+        - group.fields.ordered.each.with_index do |field, _i|
+          %li.list-group-item{ class: "#{field.repeat ? 'list-group-item-light' : 'ps-0 pe-0' }", 'data-kind': field.kind }
+            - if field.repeat
+              .fields-list{ 'data-controller': 'gaco-cms-repeatable-field' }
+                .d-flex.justify-content-end
+                  = link_to tpl_gaco_cms_admin_field_path(id: field, group_no: group_no), class: 'btn btn-sm btn-outline-primary', 'data-gaco-cms-repeatable-field-target' => 'button' do
+                    = field.title
+                    %i.fa.fa-plus-square
+                %ul.list-group.list-group-flush{ 'data-gaco-cms-repeatable-field-target': 'list', data: { controller: 'gaco-cms-sortable', 'gaco-cms-sortable-handle-value': '.list-group-item .sort-btn', 'gaco-cms-sortable-input-selector-value': '.position-field' } }
+                  - field_values.all_or_new_for(field, group_no).each do |value|
+                    = render '/gaco_cms/admin/fields/render/field', value: value, index: 0
+            - else
+              = render '/gaco_cms/admin/fields/render/field', value: field_values.all_or_new_for(field, group_no).first, index: 0

@@ -1,0 +1,24 @@
+%h1= GacoCms::Theme.human_name(count: 2)
+
+.text-end
+  = link_to(url_for(action: :new), class: 'btn btn-small btn-primary') do
+    = GacoCms::Theme.human_name
+    %i.fa.fa-plus
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th= GacoCms::Theme.attr_label(:key)
+      %th= GacoCms::Theme.attr_label(:title)
+      %th= GacoCms::Theme.attr_label(:active)
+      %th
+
+  %tbody
+    - @themes.each do |theme|
+      %tr
+        %td= theme.key
+        %td= theme.title
+        %td= theme.active
+        %td.text-end{ style: 'white-space: nowrap;' }
+          = link_to '<i class="fa fa-pencil"></i>'.html_safe, url_for(action: :edit, id: theme), class: 'btn btn-primary btn-sm'
+          = button_to '<i class="fa fa-trash"></i>'.html_safe, url_for(action: :destroy, id: theme), class: 'btn btn-danger btn-sm', form_class: 'd-inline', method: :delete, data: { controller: 'form-confirm', confirm: 'Are you sure?' }

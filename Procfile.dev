@@ -1,0 +1,5 @@
+js: yarn build --watch
+css: yarn build:css --watch
+css_front: yarn build:css_front --watch
+
+

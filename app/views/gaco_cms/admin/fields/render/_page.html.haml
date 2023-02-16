@@ -1,0 +1,3 @@
+-# locals: { value: FieldValue, name: String }
+= fields_for name, value do |f|
+  = f.grouped_collection_select :value, GacoCms::PageType.title_ordered.all, :pages, :title, :id, :title, { include_blank: true, selected: value.value_for_input }, class: 'form-select'

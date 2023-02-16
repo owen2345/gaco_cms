@@ -1,0 +1,23 @@
+%h2= form_title(@page_type)
+= form_for(@page_type, url: url_for(action: @page_type.new_record? ? :create : :update), html: { enctype: 'multipart/form-data', class: 'row' }) do |f|
+  .col-9.col-xs-12
+    .row.mb-2
+      .col
+        = f.label :title
+        = f.text_field :title, value: @page_type.title_data.to_json, class: 'form-control', required: true, data: { controller: 'gaco-cms-translatable' }
+      .col.col-auto
+        = f.label :key
+        = f.text_field :key, class: 'form-control', required: true
+    .field.mb-2
+      = f.label :template
+      .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': @page_type.template.present? } }
+        = f.text_area :template, class: 'form-control', data: { controller: 'gaco-cms-editor', height: 500 }
+
+  .col-3.col-xs-12
+    .field.mb-2.text-end
+      = link_to url_for(action: :index), class: 'btn btn-secondary me-3' do
+        Cancel
+
+      = button_tag class: 'btn btn-primary' do
+        Save
+        %i.fa.fa-save

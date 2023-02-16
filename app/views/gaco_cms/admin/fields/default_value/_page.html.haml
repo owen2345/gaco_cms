@@ -1,0 +1,3 @@
+-# locals { field: Field, f: Form }
+= f.label :def_value
+= f.grouped_collection_select :def_value, GacoCms::PageType.title_ordered.all, :pages, :title, :id, :title, { include_blank: true }, class: 'form-select'

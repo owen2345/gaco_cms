@@ -1,0 +1,4 @@
+-# locals: { value: FieldValue, name: String }
+= fields_for name, value do |f|
+  .file_panel{ data: { controller: 'gaco-cms-file-input' } }
+    = f.text_field :value, value: value.value_for_input, class: 'form-control',  data: { 'gaco-cms-file-input-target': 'input', controller: "#{'gaco-cms-translatable' if value.field.translatable}", 'gaco-cms-translatable-closest-clone-value': '.file_panel' }

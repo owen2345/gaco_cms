@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
+# Specify your gem's dependencies in gaco_cms.gemspec.
+gemspec
+
+gem 'annotate'
+gem 'byebug'
+gem 'capybara'
+gem 'database_cleaner-active_record'
+gem 'factory_bot_rails'
+gem 'rspec-rails'
+gem 'rubocop-rails', require: false
+gem 'sqlite3'

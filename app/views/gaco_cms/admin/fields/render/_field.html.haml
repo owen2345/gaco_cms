@@ -1,0 +1,31 @@
+-# locals: { value: Value }
+:ruby
+  key = "#{value.id}_#{value.field_id}_#{value.field.field_group_id}_#{Time.current.to_i}"
+  name = "field_values_attributes[#{key}]"
+
+- field_tpl = capture do
+  = fields_for name, value do |f|
+    = f.hidden_field :id
+    = f.hidden_field :field_id
+    = f.hidden_field :group_no
+    = f.text_field :position, class: 'd-none position-field'
+    = f.check_box :_destroy, class: 'd-none _destroy_field'
+    .d-flex.align-items-center
+      = required_label f, :title, label: value.field.title, optional: !value.required, class: 'me-2'
+      %small
+        %code.small= "[#{value.field.key}]"
+    - if value.field.description
+      .small.text-light.fst-italic= value.field.description
+  = render value.field.tpl, value: value, name: name
+
+- if value.repeat
+  %li.list-group-item.border
+    .row.align-items-center
+      .col.field-col= field_tpl
+      .col.actions-col.col-auto.text-end
+        = fields_for name, value do |f|
+          = f.check_box :_destroy, 'data-controller': 'gaco-cms-deletable_row', 'data-hide-closest': '.list-group-item', 'data-hideonly': value.id, class: '_destroy_field'
+        = button_tag class: 'btn btn-sm sort-btn btn-light', type: :button do
+          %i.fa.fa-arrows-alt
+- else
+  = field_tpl

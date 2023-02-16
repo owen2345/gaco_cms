@@ -1,0 +1,7 @@
+%ol.breadcrumb.mb-0.small
+  - @breadcrumbs.each do |item|
+    - label = item[0].is_a?(String) ? item[0] : t("breadcrumbs.#{Array(item.first).join('.')}")
+    - if @breadcrumbs.last == item
+      %li.breadcrumb-item.active= label
+    - else
+      %li.breadcrumb-item= link_to(label, item[1], class: 'link-light')

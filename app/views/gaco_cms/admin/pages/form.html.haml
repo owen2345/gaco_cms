@@ -1,0 +1,41 @@
+%h2= form_title(@page)
+= form_for(@page, url: @page.new_record? ? url_for(action: :create) : url_for(action: :update), html: { enctype: 'multipart/form-data', class: 'row' }) do |f|
+  .col-9.col-xs-12
+    .row.mb-2
+      .col.col-auto
+        = f.label :key
+        = f.text_field :key, class: 'form-control', required: true
+      .col
+        = f.label :title
+        = f.text_field :title, value: @page.title_data.to_json, class: 'form-control', required: true, data: { controller: 'gaco-cms-translatable' }
+
+    .field.mb-2
+      = f.label :content
+      = f.text_area :content, value: @page.content_data.to_json, class: 'form-control', required: true, data: { controller: 'gaco-cms-translatable gaco-cms-editor' }
+
+    .field.mb-2
+      = f.label :template
+      .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': @page.template.present? } }
+        = f.text_area :template, class: 'form-control', data: { controller: 'gaco-cms-editor', height: '400' }
+
+    .field.mb-2
+      = f.label :summary
+      .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': @page.summary_data.values.any?(&:present?) } }
+        = f.text_area :summary, value: @page.summary_data.to_json, class: 'form-control', data: { controller: 'gaco-cms-translatable' }
+
+    = render '/gaco_cms/admin/fields/render/fields', record: @page, groups: @page.all_field_groups
+
+  .col-3.col-xs-12.p-0
+    .border.p-2.sticky-top
+      .field.mb-2.d-flex.justify-content-between.border-bottom.pt-2.pb-2.mb-4
+        = link_to url_for(action: :index), class: 'btn btn-secondary' do
+          Cancel
+
+        = button_tag class: 'btn btn-primary' do
+          Save
+          %i.fa.fa-save
+
+      .field.mb-2
+        = f.label :photo_url
+        .photo_panel{ data: { controller: 'gaco-cms-file-input' } }
+          = f.text_field :photo_url, class: 'form-control', accept: 'image/*', data: { 'gaco-cms-file-input-target': 'input' }

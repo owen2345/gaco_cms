@@ -1,0 +1,24 @@
+%h2= form_title(@theme)
+= form_for(@theme, url: @theme.new_record? ? url_for(action: :create) : url_for(action: :update), html: { enctype: 'multipart/form-data', class: 'row' }) do |f|
+  .col-8.col-xs-12
+    = render '/gaco_cms/admin/fields/render/fields', record: @theme, groups: @theme.field_groups
+
+  .col-4.col-xs-12
+    .card.sticky-top
+      .card-body
+        .field.mb-2
+          = f.label :key
+          = f.text_field :key, class: 'form-control', required: true
+        .field.mb-2
+          = f.label :title
+          = f.text_field :title, class: 'form-control', required: true
+        .field.mb-2
+          = f.label :active
+          = f.check_box :active
+
+        .p-2.text-end
+          = link_to url_for(action: :index), class: 'btn btn-secondary me-2' do
+            Cancel
+          = button_tag class: 'btn btn-primary' do
+            Save
+            %i.fa.fa-save
