@@ -1,0 +1,53 @@
+-# locals: { field: Field, parent_name: String }
+:ruby
+  accordion_key = "field_item_#{Time.current.to_i}_#{field.id}_#{field.kind}"
+  name = "#{parent_name}fields_attributes[#{accordion_key}]"
+
+.accordion-item
+  .accordion-header
+    .accordion-button{'data-bs-target' => "##{accordion_key}", "data-bs-toggle" => "collapse"}
+      = button_tag class: 'btn btn-sm sort-btn btn-light', type: :button do
+        %i.fa.fa-arrows-alt
+      = check_box_tag "#{name}[_destroy]", '1', false , 'data-controller': 'gaco-cms-deletable_row', 'data-hide-closest': '.accordion-item', 'data-hideonly': field.id
+      %code.ms-3.small= "[#{field.kind}]"
+
+  .accordion-collapse.collapse.show{ id: accordion_key }
+    .accordion-body
+      = fields_for name, field do |f|
+        = f.hidden_field :id
+        = f.hidden_field :kind
+        .row.mb-2.gx-2
+          .col.col-auto
+            = f.label :key
+            = f.text_field :key, class: 'form-control ms-1 me-1', style: 'max-width: 100px'
+          .col
+            = f.label :title
+            = f.text_field :title, class: 'form-control'
+          .col.col-auto
+            = f.label :repeat
+            %br
+            = f.check_box :repeat, class: 'form-check-input'
+          .col.col-auto
+            = f.label :required
+            %br
+            = f.check_box :required, class: 'form-check-input'
+          - if field.allow_translation?
+            .col.col-auto
+              = f.label :translatable
+              %br
+              = f.check_box :translatable, class: 'form-check-input'
+          .col.col-auto.d-none
+            = f.label :position
+            = f.number_field :position, class: 'form-control position-field'
+        .row
+          .col-6
+            - if field.default_value_tpl
+              = render field.default_value_tpl, field: field, f: f
+            - else
+              = f.label :def_value
+              .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': field.def_value_data.values.any?(&:present?) } }
+                = f.text_field :def_value, value: field.def_value_data.to_json, class: 'form-control', data: { controller: 'gaco-cms-translatable' }
+          .col-6
+            = f.label :description
+            .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': field.description_data.values.any?(&:present?) } }
+              = f.text_area :description, class: 'form-control'

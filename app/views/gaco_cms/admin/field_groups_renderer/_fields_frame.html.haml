@@ -1,0 +1,16 @@
+-# locals: { record: Page|Theme }
+
+.fieldset_style
+  .d-flex.justify-content-end.legend_style
+    = link_to gaco_cms_admin_field_groups_manager_index_path(record_type: @page.class.name, record_id: @page.id, reload_frame: '#field-groups-renderer'), class: 'btn btn-sm btn-info', 'data-title': 'Configure Fields', 'data-controller': 'gaco-cms-modal', 'data-gaco-cms-modal-size-value': 'modal-xl' do
+      %i.fa.fa-gears
+      Configure Fields
+
+  %turbo-frame{ id: 'field-groups-renderer', src: gaco_cms_admin_field_groups_renderer_index_path(record_type: @page.class.name, record_id: @page.id) }
+    .card{ style: 'min-height: 250px' }
+      .card-body
+        %h5.card-title.placeholder-glow
+          %span.placeholder.col-12{ style: 'height: 50px' }
+        %p.card-text.placeholder-glow
+          %span.placeholder.col-12
+          %span.placeholder.col-12

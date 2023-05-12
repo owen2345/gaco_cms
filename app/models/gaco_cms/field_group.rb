@@ -14,6 +14,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  record_id   :integer
+#  template    :text             default('')
 #
 # Indexes
 #

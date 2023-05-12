@@ -19,10 +19,10 @@
   = render value.field.tpl, value: value, name: name
 
 - if value.repeat
-  %li.list-group-item.border
-    .row.align-items-center
+  %li.list-group-item.ps-1.pe-1
+    .row.align-items-center.gx-2
       .col.field-col= field_tpl
-      .col.actions-col.col-auto.text-end
+      .col.actions-col.col-auto.text-end{ style: 'max-width: 38px;' }
         = fields_for name, value do |f|
           = f.check_box :_destroy, 'data-controller': 'gaco-cms-deletable_row', 'data-hide-closest': '.list-group-item', 'data-hideonly': value.id, class: '_destroy_field'
         = button_tag class: 'btn btn-sm sort-btn btn-light', type: :button do

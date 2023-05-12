@@ -1,0 +1,16 @@
+%h2= form_title(@page)
+= form_for(@page, url: url_for(action: :create), html: { 'data-turbo-frame': '_top', 'data-turbo-request-close-modal': 'true' }) do |f|
+  .row.mb-2
+    .col.col-auto
+      = f.label :key
+      = f.text_field :key, class: 'form-control', required: true
+    .col
+      = f.label :title
+      = f.text_field :title, value: @page.title_data.to_json, class: 'form-control', required: true, data: { controller: 'gaco-cms-translatable' }
+
+  .field.text-end
+    = button_tag class: 'btn btn-primary' do
+      Save
+      %i.fa.fa-save
+
+

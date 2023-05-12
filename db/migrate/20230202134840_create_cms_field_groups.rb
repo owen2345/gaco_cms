@@ -9,6 +9,7 @@ class CreateCmsFieldGroups < ActiveRecord::Migration[7.0]
       t.references :record, polymorphic: true
       t.boolean :repeat, default: false
       t.integer :position, default: 0
+      t.text :template, default: ''
 
       t.timestamps
     end

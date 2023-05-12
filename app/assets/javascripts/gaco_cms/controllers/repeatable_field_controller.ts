@@ -13,7 +13,7 @@ export default class extends Controller {
 	declare listTarget: HTMLUListElement;
 	declare hasButtonTarget: boolean
 
-	connect() {
+	initialize() {
 		if (!this.hasButtonTarget) return;
 		this.buttonTarget.addEventListener('click', this.loadTpl.bind(this));
 	}

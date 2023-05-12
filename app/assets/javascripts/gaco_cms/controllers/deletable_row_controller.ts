@@ -10,7 +10,7 @@ export default class extends Controller {
   declare panelToHide: HTMLElement;
   declare isSaved: boolean;
 
-	connect() {
+	initialize() {
 		this.element.style.display = 'none';
 		this.element.insertAdjacentHTML('afterend', this.deleteBtn());
 		const hideTarget = this.element.getAttribute('data-hide-closest');

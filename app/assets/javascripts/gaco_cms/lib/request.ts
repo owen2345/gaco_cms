@@ -13,6 +13,8 @@ export const ajaxRequest = async (path, data = {}, method = 'GET', format = 'tex
 		headers: requestHeaders()
 	};
 	if (method !== 'GET') reqData['body'] = data;
+
+	//TODO: show/hide loading bar
 	const response = await fetch(path, reqData);
 	const res = await (format == 'json' ? response.json() : response.text());
 	return res;

@@ -1,0 +1,57 @@
+%h2= form_title(@page)
+= form_for(@page, url: url_for(action: :update), html: { enctype: 'multipart/form-data', class: 'row mb-4', 'data-turbo-request-reload-frame': '#page_iframe,#field-groups-renderer,#field-groups-renderer-parent' }) do |f|
+  .col-4.col-xs-12.border-end
+    .text-end.sticky-top.bg-white.pb-2.mb-2
+      = link_to url_for(action: :index), class: 'btn btn-secondary me-2' do
+        Cancel
+      = button_tag class: 'btn btn-primary' do
+        Save
+        %i.fa.fa-save
+
+    .row.mb-2
+      .col.col-auto
+        = f.label :key
+        .fw{ data: { controller: 'gaco-cms-toggle-field' } }
+          = f.text_field :key, class: 'form-control', required: true
+      .col
+        = f.label :title
+        = f.text_field :title, value: @page.title_data.to_json, class: 'form-control', required: true, data: { controller: 'gaco-cms-translatable' }
+
+    .field.mb-2
+      = f.label :content
+      = f.text_area :content, value: @page.content_data.to_json, class: 'form-control', required: true, data: { controller: 'gaco-cms-translatable gaco-cms-editor', height: '300px' }
+
+    .row.mb-2
+      .col.col-6
+        = f.label :template
+        .fw{ data: { controller: 'gaco-cms-toggle-field' } }
+          = f.text_area :template, class: 'form-control', data: { controller: 'gaco-cms-editor', height: '400' }
+
+      .col.col-6
+        = f.label :summary
+        .fw{ data: { controller: 'gaco-cms-toggle-field' } }
+          = f.text_area :summary, value: @page.summary_data.to_json, class: 'form-control', data: { controller: 'gaco-cms-translatable' }
+
+    .field.mb-2
+      = f.label :photo_url
+      .photo_panel{ data: { controller: 'gaco-cms-file-input' } }
+        = f.text_field :photo_url, class: 'form-control', accept: 'image/*', data: { 'gaco-cms-file-input-target': 'input' }
+
+    .fieldset_style
+      .d-flex.justify-content-end.legend_style
+        %span.bg-white.px-1 Page Fields
+        = link_to gaco_cms_admin_field_groups_manager_index_path(record_type: @page.class.name, record_id: @page.id, reload_frame: '#field-groups-renderer'), class: 'btn btn-sm btn-info', 'data-title': 'Configure Fields', 'data-controller': 'gaco-cms-modal', 'data-gaco-cms-modal-size-value': 'modal-xl' do
+          %i.fa.fa-pencil
+      %turbo-frame{ id: 'field-groups-renderer', src: gaco_cms_admin_field_groups_renderer_index_path(record_type: @page.class.name, record_id: @page.id) }
+
+    - if @page.page_type.field_groups.any?
+      .fieldset_style
+        .d-flex.justify-content-end.legend_style
+          %span.bg-white.px-1 Inherited Fields
+          = link_to gaco_cms_admin_field_groups_manager_index_path(record_type: @page.page_type.class.name, record_id: @page.page_type_id, reload_frame: '#field-groups-renderer-parent'), class: 'btn btn-sm btn-info', 'data-title': 'Configure Parent Fields', 'data-controller': 'gaco-cms-modal', 'data-gaco-cms-modal-size-value': 'modal-xl' do
+            %i.fa.fa-pencil
+
+        %turbo-frame{ id: 'field-groups-renderer-parent', src: gaco_cms_admin_field_groups_renderer_index_path(record_type: @page.class.name, record_id: @page.id, parent: true ) }
+
+  .col.col-8
+    %iframe{ src: page_url_for(@page.id), width: '100%', height: '100%', id: 'page_iframe' }

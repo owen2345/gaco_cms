@@ -35,6 +35,7 @@ module GacoCms
                    '{photo_yield}</li>"] Or [page_grouped_fields keys="name,photo" page_id=10 content=...'
       tf_sample = '<img src="[theme_field key=\'photo\'] or [theme_field key=\'photo\' group_no=1]" />'
       pf_sample = '[page_photo] or [page_photo page_id=10 style=".."]'
+      pg_sample = '[page_group key="my_key"] or [page_group key="my_key" page_id=10 wrapper="<div class=\'row\'>{yield}</div>"]'
       {
         page_content: { render: method(:page_content_parser), sample: '[page_content] or [page_content page_id=10]' },
         page_title: { render: method(:page_title_parser), sample: '[page_title] or [page_title page_id=10]' },
@@ -45,6 +46,7 @@ module GacoCms
         # page_fields: { render: method(:page_fields_parser), sample:  },
         page_grouped_fields: { render: method(:page_grouped_fields_parser), sample: pgf_sample },
         page_url: { render: method(:page_url_parser), sample: '[page_url] or [page_url page_id=10]' },
+        page_group: { render: method(:page_group_parser), sample: pg_sample },
         theme_field: { render: method(:theme_field_parser), sample: tf_sample },
         theme_img_field: { render: method(:theme_img_field_parser), sample: '[theme_img_field key="my_img"]' }
       }.except(*ignored_shortcodes)
@@ -105,6 +107,8 @@ module GacoCms
     end
 
     def replace_field_wrapper(attrs, content)
+      return content unless attrs.key?('wrapper')
+
       attrs['wrapper'].to_s.sub('{yield}', content).gsub('&lt;', '<').gsub('&gt;', '>')
     end
 
@@ -181,6 +185,25 @@ module GacoCms
       return '--PageNotFound--' unless context
 
       ApplicationHelper.page_url_for(context.id)
+    end
+
+    # TODO: add missing test cases
+    def page_group_parser(attrs, _args)
+      context = calc_context(nil, attrs)
+      return '--PageNotFound--' unless context
+
+      group = context.field_groups.find_by(key: attrs['key'])
+      return '--GroupNotFound--' unless group
+
+      keys = group.fields.pluck(:key)
+      result = context.the_grouped_values(*keys).map do |fields|
+        content = group.template.to_s
+        keys.each do |key|
+          content = content.gsub("{#{key}_yield}", fields[key])
+        end
+        content
+      end.join
+      replace_field_wrapper(attrs, result)
     end
 
     def theme_field_parser(attrs, args)

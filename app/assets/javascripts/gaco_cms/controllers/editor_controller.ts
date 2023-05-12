@@ -4,7 +4,7 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
   declare element: HTMLTextAreaElement|HTMLInputElement;
 
-  connect() {
+	initialize() {
   	const attrController = this.element.getAttribute('data-controller');
   	const isTranslatable = attrController.includes('gaco-cms-translatable');
   	if (!isTranslatable) this.buildEditor();

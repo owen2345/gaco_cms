@@ -8,7 +8,7 @@ export default class extends Controller {
 	declare targetValue: string;
 
 
-  connect() {
+	initialize() {
   	const that = this;
   	this.element.addEventListener('click', (ev) => {
   		ev.preventDefault();
@@ -21,6 +21,7 @@ export default class extends Controller {
 		if (!res) return;
 
 		document.body.querySelector<HTMLElement>(this.targetValue).insertAdjacentHTML('beforeend', res);
+		// TODO: if inside modal, scroll modal scroll instead of window
 		window.scrollTo(0, document.body.scrollHeight);
 	}
 }

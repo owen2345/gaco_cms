@@ -1,0 +1,21 @@
+%h2= form_title(@theme)
+= form_for(@theme, url: url_for(action: :create), html: { enctype: 'multipart/form-data', 'data-turbo-frame': '_top', 'data-turbo-request-close-modal': 'true' }) do |f|
+  .field.mb-2
+    = f.label :title
+    = f.text_field :title, class: 'form-control', required: true
+
+  .field.mb-2
+    = f.label :key
+    = f.text_field :key, class: 'form-control', required: true
+
+  .field.mb-2
+    = f.label :active
+    %br
+    = f.check_box :active
+
+  .field.text-end
+    = button_tag class: 'btn btn-primary' do
+      Save
+      %i.fa.fa-save
+
+

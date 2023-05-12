@@ -8,12 +8,13 @@ Rails.application.routes.draw do
       resources :page_types do
         resources :pages
       end
-      resources :field_groups do
-        get :tpl, on: :member
-        get :new_field, on: :collection
+      resources :field_groups_manager, only: %i[index update] do
+        get :group_tpl, on: :collection
+        get :field_tpl, on: :collection
       end
-      resources :fields, only: [] do
-        get :tpl, on: :member
+      resources :field_groups_renderer, only: :index do
+        get :render_group, on: :collection
+        get :render_field, on: :collection
       end
       resources :themes
     end

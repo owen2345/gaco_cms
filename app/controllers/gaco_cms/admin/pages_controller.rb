@@ -13,25 +13,22 @@ module GacoCms
 
       def new
         @page = @page_type.pages.new
-        render :form
       end
 
       def create
         page = @page_type.pages.new(page_params)
         if page.save
-          redirect_to url_for(action: :index), notice: 'Page saved'
+          redirect_to url_for(action: :edit, id: page), notice: 'Page created'
         else
           render inline: page.errors.full_messages.join(', ')
         end
       end
 
-      def edit
-        render :form
-      end
+      def edit; end
 
       def update
         if @page.update(page_params)
-          redirect_to url_for(action: :index), notice: 'Page saved'
+          render inline: ''
         else
           render inline: @page.errors.full_messages.join(', ')
         end

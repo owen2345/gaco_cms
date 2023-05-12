@@ -33645,6 +33645,21 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
   });
 
   // app/assets/javascripts/gaco_cms/lib/turbo_request.ts
+  var reloadTurboFrames = (frames) => {
+    frames.forEach((frameSelector) => {
+      const frame = document.body.querySelector(frameSelector);
+      if (!frame)
+        return;
+      const src = frame.src;
+      frame.src = null;
+      frame.src = src;
+    });
+  };
+  var closeActiveModal = () => {
+    const modal = document.body.querySelector(":scope .modal.show");
+    if (modal)
+      modal.dispatchEvent(new CustomEvent("close-modal"));
+  };
   document.addEventListener("turbo:before-fetch-request", (e) => {
     const target = e.target;
     e.detail.fetchOptions.headers["turbo-request"] = true;
@@ -33652,10 +33667,33 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
       e.detail.fetchOptions.headers["turbo-update"] = e.target.id;
     }
   });
+  var parseRequestError = async (response) => {
+    const result = await response.clone().text();
+    const body = result.split("<body>")[1].split("</body>")[0];
+    const tpl = `
+	  <div data-controller="gaco-cms-modal"
+	  data-gaco-cms-modal-size-value="modal-lg text-danger" 
+	  data-gaco-cms-modal-self-modal-value="true">${body}</div>
+	`;
+    document.body.insertAdjacentHTML("beforeend", tpl);
+  };
   document.addEventListener("turbo:before-fetch-response", (e) => {
     const target = e.target;
+    const sourceTarget = e.target;
     if (target.id == "turbo_frame_none")
       target.removeAttribute("src");
+    const response = e.detail.fetchResponse.response;
+    if (response.status != 500) {
+      const closeModal = sourceTarget.getAttribute("data-turbo-request-close-modal");
+      if (closeModal)
+        closeActiveModal();
+      const frames = sourceTarget.getAttribute("data-turbo-request-reload-frame");
+      if (frames)
+        reloadTurboFrames(frames.split(","));
+    } else {
+      e.preventDefault();
+      parseRequestError(response);
+    }
   });
 
   // app/assets/javascripts/gaco_cms.js
@@ -35537,11 +35575,9 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
   var fieldsCounter = 0;
   var translatable_controller_default = class extends Controller {
     initialize() {
+      fieldsCounter += 1;
       this.locales = window.gaco_cms_config.locales;
       this.currentLoc = window.gaco_cms_config.locale;
-    }
-    connect() {
-      fieldsCounter += 1;
       try {
         this.dataValue = JSON.parse(this.element.value || "{}");
       } catch {
@@ -35607,7 +35643,7 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
 
   // app/assets/javascripts/gaco_cms/controllers/editor_controller.ts
   var editor_controller_default = class extends Controller {
-    connect() {
+    initialize() {
       const attrController = this.element.getAttribute("data-controller");
       const isTranslatable = attrController.includes("gaco-cms-translatable");
       if (!isTranslatable)
@@ -35662,7 +35698,7 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
 
   // app/assets/javascripts/gaco_cms/controllers/deletable_row_controller.ts
   var deletable_row_controller_default = class extends Controller {
-    connect() {
+    initialize() {
       this.element.style.display = "none";
       this.element.insertAdjacentHTML("afterend", this.deleteBtn());
       const hideTarget = this.element.getAttribute("data-hide-closest");
@@ -35699,7 +35735,7 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
 
   // app/assets/javascripts/gaco_cms/controllers/confirm_controller.ts
   var confirm_controller_default = class extends Controller {
-    connect() {
+    initialize() {
       const action = this.element.tagName == "FORM" ? "submit" : "click";
       this.element.addEventListener(action, this.confirm.bind(this), false);
     }
@@ -35735,7 +35771,7 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
 
   // app/assets/javascripts/gaco_cms/controllers/repeatable_field_controller.ts
   var repeatable_field_controller_default = class extends Controller {
-    connect() {
+    initialize() {
       if (!this.hasButtonTarget)
         return;
       this.buttonTarget.addEventListener("click", this.loadTpl.bind(this));
@@ -35750,7 +35786,7 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
 
   // app/assets/javascripts/gaco_cms/controllers/file_input_controller.ts
   var file_input_controller_default = class extends Controller {
-    connect() {
+    initialize() {
       setTimeout(this.parseElement.bind(this), 200);
     }
     parseElement() {
@@ -35817,7 +35853,7 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
 
   // app/assets/javascripts/gaco_cms/controllers/remote_content_controller.ts
   var remote_content_controller_default = class extends Controller {
-    connect() {
+    initialize() {
       const that = this;
       this.element.addEventListener("click", (ev) => {
         ev.preventDefault();
@@ -35836,7 +35872,7 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
 
   // app/assets/javascripts/gaco_cms/controllers/toggle_field_controller.ts
   var toggle_field_controller_default = class extends Controller {
-    connect() {
+    initialize() {
       if (this.openValue)
         return;
       this.element.insertAdjacentHTML("beforebegin", this.editIconTpl());
@@ -38043,7 +38079,7 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
 
   // app/assets/javascripts/gaco_cms/controllers/sortable_controller.ts
   var sortable_controller_default = class extends Controller {
-    connect() {
+    initialize() {
       new sortable_esm_default(this.element, {
         handle: this.handleValue,
         animation: 150,
@@ -38059,17 +38095,6 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
     }
   };
   sortable_controller_default.values = { handle: String, inputSelector: String };
-
-  // app/assets/javascripts/gaco_cms/base.js
-  stimulus_default.register("gaco-cms-translatable", translatable_controller_default);
-  stimulus_default.register("gaco-cms-editor", editor_controller_default);
-  stimulus_default.register("gaco-cms-deletable_row", deletable_row_controller_default);
-  stimulus_default.register("gaco-cms-repeatable-field", repeatable_field_controller_default);
-  stimulus_default.register("gaco-cms-file-input", file_input_controller_default);
-  stimulus_default.register("gaco-cms-remote-content", remote_content_controller_default);
-  stimulus_default.register("gaco-cms-toggle-field", toggle_field_controller_default);
-  stimulus_default.register("gaco-cms-sortable", sortable_controller_default);
-  stimulus_default.register("form-confirm", confirm_controller_default);
 
   // node_modules/@popperjs/core/lib/index.js
   var lib_exports = {};
@@ -43119,6 +43144,82 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
   };
   enableDismissTrigger(Toast);
   defineJQueryPlugin(Toast);
+
+  // app/assets/javascripts/gaco_cms/controllers/modal_controller.ts
+  var modalsCounter = 1;
+  var modal_controller_default = class extends Controller {
+    initialize() {
+      const that = this;
+      if (this.selfModalValue) {
+        this.buildModal();
+        this.element.remove();
+      } else {
+        this.element.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          that.buildModal();
+        });
+      }
+    }
+    tpl(content) {
+      return `
+			<div class="modal fade" id="${this.modalId}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+				<div class="modal-dialog ${this.sizeValue}">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">${this.titleValue || this.element.getAttribute("data-title") || ""}</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							${content}
+						</div>
+					</div>
+				</div>
+      </div>
+		`;
+    }
+    calcContent() {
+      if (this.selfModalValue)
+        return this.element.innerHTML;
+      if (this.bodyValue)
+        return this.bodyValue;
+      if (this.targetValue)
+        return document.body.querySelector(this.targetValue).innerHTML;
+      if (this.element.tagName == "A")
+        return `<turbo-frame id='turbo-frame-${this.modalId}' src='${this.element.href}'></turbo-frame>`;
+      return "";
+    }
+    buildModal() {
+      this.modalId = `modal_${modalsCounter}`;
+      document.body.insertAdjacentHTML("beforeend", this.tpl(this.calcContent()));
+      modalsCounter += 1;
+      setTimeout(this.showModal.bind(this), 2);
+    }
+    showModal() {
+      const modalEle = document.getElementById(this.modalId);
+      const modal = new Modal(modalEle);
+      modal.show();
+      modalEle.addEventListener("close-modal", () => {
+        modal.hide();
+      });
+      modalEle.addEventListener("hidden.bs.modal", function(event) {
+        modalEle.remove();
+      });
+    }
+  };
+  modal_controller_default.values = { body: String, title: String, target: String, size: String, selfModal: Boolean };
+
+  // app/assets/javascripts/gaco_cms/base.js
+  stimulus_default.register("gaco-cms-translatable", translatable_controller_default);
+  stimulus_default.register("gaco-cms-editor", editor_controller_default);
+  stimulus_default.register("gaco-cms-deletable_row", deletable_row_controller_default);
+  stimulus_default.register("gaco-cms-repeatable-field", repeatable_field_controller_default);
+  stimulus_default.register("gaco-cms-file-input", file_input_controller_default);
+  stimulus_default.register("gaco-cms-remote-content", remote_content_controller_default);
+  stimulus_default.register("gaco-cms-toggle-field", toggle_field_controller_default);
+  stimulus_default.register("gaco-cms-sortable", sortable_controller_default);
+  stimulus_default.register("gaco-cms-modal", modal_controller_default);
+  stimulus_default.register("form-confirm", confirm_controller_default);
 })();
 /*!
   * Bootstrap v5.1.3 (https://getbootstrap.com/)

@@ -12,25 +12,22 @@ module GacoCms
 
       def new
         @theme = Theme.new
-        render :form
       end
 
       def create
-        theme = Theme.new(group_params)
+        theme = Theme.new(theme_params)
         if theme.save
-          redirect_to url_for(action: :index), notice: 'Theme saved'
+          redirect_to url_for(action: :edit, id: theme), notice: 'Theme created'
         else
           render inline: theme.errors.full_messages.join(', ')
         end
       end
 
-      def edit
-        render :form
-      end
+      def edit; end
 
       def update
         if @theme.update(theme_params)
-          redirect_to url_for(action: :index), notice: 'Theme updated'
+          render inline: ''
         else
           render inline: @theme.errors.full_messages.join(', ')
         end

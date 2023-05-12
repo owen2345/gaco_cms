@@ -14,12 +14,9 @@ export default class extends Controller {
 	declare closestCloneValue: string;
 
 	initialize() {
+		fieldsCounter += 1;
 		this.locales = window.gaco_cms_config.locales;
 		this.currentLoc = window.gaco_cms_config.locale;
-	}
-
-	connect() {
-		fieldsCounter += 1;
   	try {
 			this.dataValue = JSON.parse(this.element.value || '{}');
 		} catch {

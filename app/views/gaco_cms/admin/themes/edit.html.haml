@@ -1,0 +1,36 @@
+.row
+  .col-4.col-xs-12
+    %h2= form_title(@theme)
+    = form_for(@theme, url: url_for(action: :update), html: { enctype: 'multipart/form-data', 'data-turbo-request-reload-frame': '#theme_iframe,#field-groups-renderer' }) do |f|
+      .row
+        .col
+          = f.label :key
+          .fw{ data: { controller: 'gaco-cms-toggle-field' } }
+            = f.text_field :key, class: 'form-control', required: true
+        .col.col-auto
+          = f.label :title
+          = f.text_field :title, class: 'form-control', required: true
+        .col.col-auto
+          = f.label :active
+          %br
+          = f.check_box :active
+
+      .sticky-top.bg-white.p-1
+        .text-end
+          = link_to url_for(action: :index), class: 'btn btn-secondary me-2' do
+            Cancel
+          = button_tag class: 'btn btn-primary' do
+            Save
+            %i.fa.fa-save
+      %hr
+
+      .fieldset_style
+        .d-flex.justify-content-end.legend_style
+          = link_to gaco_cms_admin_field_groups_manager_index_path(record_type: @theme.class.name, record_id: @theme.id, reload_frame: '#field-groups-renderer'), class: 'btn btn-sm btn-info', 'data-title': 'Configure Fields', 'data-controller': 'gaco-cms-modal', 'data-gaco-cms-modal-size-value': 'modal-xl' do
+            %i.fa.fa-gears
+            Configure Fields
+        %turbo-frame{ id: 'field-groups-renderer', src: gaco_cms_admin_field_groups_renderer_index_path(record_type: @theme.class.name, record_id: @theme.id) }
+
+  .col.col-8
+    %iframe{ src: gaco_cms_path, width: '100%', height: '2000px', id: 'theme_iframe' }
+

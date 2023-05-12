@@ -8,6 +8,7 @@ module GacoCms
       has_many :fields, through: :field_groups
       has_many :field_values, dependent: :destroy, as: :record, inverse_of: :record
       accepts_nested_attributes_for :field_values, allow_destroy: true
+      accepts_nested_attributes_for :field_groups, allow_destroy: true
     end
 
     def the_value(key, cache: true)

@@ -13,11 +13,11 @@
   %body#body
     #header
       -########### Second NavBar
-      %nav.navbar.navbar-expand-lg.shadow.text-white
+      %nav.navbar.navbar-expand-lg.shadow.text-white.bg-primary.navbar-dark
         .container
           %a.navbar-brand.logo.p-0.d-flex{href: gaco_cms_admin_path, style: 'font-size: 32px;'}
             %span.text-black Gaco
-            %span.text-primary Cms
+            %span.text-white Cms
           %button.navbar-toggler{"aria-controls" => "navbarSupportedContent", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-bs-target" => "#main_nav_bar", "data-bs-toggle" => "collapse", :type => "button"}
             %span.fa.fa-bars
 
@@ -25,7 +25,7 @@
             %ul.navbar-nav
               - GacoCms::PageType.all.title_ordered.each do |ptype|
                 %li.nav-item.dropdown
-                  %button.btn.dropdown-toggle{"data-bs-toggle" => "dropdown", type: "button"}= ptype.title
+                  %button.btn.dropdown-toggle.nav-link{"data-bs-toggle" => "dropdown", type: "button"}= ptype.title
                   %ul.dropdown-menu{"aria-labelledby" => "dropdownMenuButton1"}
                     %li
                       %a.dropdown-item{href: gaco_cms_admin_page_type_pages_path(page_type_id: ptype)} List
@@ -35,8 +35,6 @@
                 .vr.bg-black{ style: 'height: 100%' }
               %li.nav-item
                 %a.nav-link{href: gaco_cms_admin_page_types_path}= GacoCms::PageType.human_name(count: 2)
-              %li.nav-item
-                %a.nav-link{href: gaco_cms_admin_field_groups_path}= GacoCms::FieldGroup.human_name(count: 2)
               %li.nav-item
                 %a.nav-link{href: gaco_cms_admin_themes_path}= GacoCms::Theme.human_name(count: 2)
 

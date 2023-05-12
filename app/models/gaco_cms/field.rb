@@ -53,7 +53,7 @@ module GacoCms
     end
 
     def default_value_tpl
-      return "/gaco_cms/admin/fields/default_value/#{kind}" if kind == 'page'
+      return "/gaco_cms/admin/field_groups_renderer/default_value/#{kind}" if kind == 'page'
 
       EXTRA_KINDS.dig(kind&.to_sym, :default_value_tpl)
     end
@@ -66,7 +66,7 @@ module GacoCms
     end
 
     def tpl
-      EXTRA_KINDS.dig(kind&.to_sym, :tpl) || "/gaco_cms/admin/fields/render/#{kind}"
+      EXTRA_KINDS.dig(kind&.to_sym, :tpl) || "/gaco_cms/admin/field_groups_renderer/fields/#{kind}"
     end
 
     private

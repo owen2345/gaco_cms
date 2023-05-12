@@ -6,7 +6,7 @@ export default class extends Controller {
   declare  messageValue: string;
   declare element: HTMLFormElement|HTMLElement;
 
-  connect() {
+	initialize() {
     const action = this.element.tagName == 'FORM' ? 'submit' : 'click';
     this.element.addEventListener(action, this.confirm.bind(this), false);
   }

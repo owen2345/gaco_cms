@@ -38,16 +38,20 @@ module GacoCms
       where_key_with(key).take
     end
 
+    # TODO: deprecated
     def all_field_groups
       FieldGroup.union_scope(field_groups, page_type.field_groups)
     end
 
-    def the_content
-      Rails.cache.fetch(cache_key_locale(:the_content), expires_at: Time.current.end_of_day) do
+    def the_content(cache: true)
+      callback = proc do
         tpl = template.presence || page_type.template.to_s
         tpl = "[page_content]#{tpl}" unless tpl.include?('[page_content]')
         ShortcodeParser.call(tpl, self).to_s
       end
+      return callback.call unless cache
+
+      Rails.cache.fetch(cache_key_locale(:the_content), expires_at: Time.current.end_of_day, &callback)
     end
   end
 end

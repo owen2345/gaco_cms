@@ -24,6 +24,7 @@ module GacoCms
     has_many :pages, dependent: :destroy
     has_many :field_groups, -> { ordered }, as: :record, inverse_of: :record, dependent: :destroy
     after_update_commit :touch_pages
+    accepts_nested_attributes_for :field_groups, allow_destroy: true
 
     scope :title_ordered, -> { order(title: :asc) }
 

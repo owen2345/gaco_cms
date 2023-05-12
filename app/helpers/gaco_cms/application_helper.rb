@@ -3,7 +3,7 @@
 module GacoCms
   module ApplicationHelper
     def form_title(model)
-      model.new_record? ? "Edit #{model.class.human_name}" : "New #{model.class.human_name}"
+      model.id ? "Edit #{model.class.human_name}" : "New #{model.class.human_name}"
     end
 
     def page_url_for(id)

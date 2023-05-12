@@ -10,15 +10,15 @@
     .accordion-body
       %ul.list-group.list-group-flush
         - group.fields.ordered.each.with_index do |field, _i|
-          %li.list-group-item{ class: "#{field.repeat ? 'list-group-item-light' : 'ps-0 pe-0' }", 'data-kind': field.kind }
+          %li.list-group-item{ class: "#{field.repeat ? 'list-group-item-light ps-1 pe-1 border' : 'ps-0 pe-0' }", 'data-kind': field.kind }
             - if field.repeat
               .fields-list{ 'data-controller': 'gaco-cms-repeatable-field' }
-                .d-flex.justify-content-end
-                  = link_to tpl_gaco_cms_admin_field_path(id: field, group_no: group_no), class: 'btn btn-sm btn-outline-primary', 'data-gaco-cms-repeatable-field-target' => 'button' do
+                .d-flex.justify-content-end.mb-2
+                  = link_to url_for(action: :render_field, field_id: field, group_no: group_no), class: 'btn btn-sm btn-outline-primary', 'data-gaco-cms-repeatable-field-target' => 'button' do
                     = field.title
                     %i.fa.fa-plus-square
                 %ul.list-group.list-group-flush{ 'data-gaco-cms-repeatable-field-target': 'list', data: { controller: 'gaco-cms-sortable', 'gaco-cms-sortable-handle-value': '.list-group-item .sort-btn', 'gaco-cms-sortable-input-selector-value': '.position-field' } }
                   - field_values.all_or_new_for(field, group_no).each do |value|
-                    = render '/gaco_cms/admin/fields/render/field', value: value, index: 0
+                    = render 'field', value: value, index: 0
             - else
-              = render '/gaco_cms/admin/fields/render/field', value: field_values.all_or_new_for(field, group_no).first, index: 0
+              = render 'field', value: field_values.all_or_new_for(field, group_no).first, index: 0

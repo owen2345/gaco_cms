@@ -8,7 +8,7 @@ export default class extends Controller {
   static values = { open: Boolean };
   declare openValue: boolean;
 
-	connect() {
+	initialize() {
 		if (this.openValue) return;
 
 		this.element.insertAdjacentHTML('beforebegin', this.editIconTpl());

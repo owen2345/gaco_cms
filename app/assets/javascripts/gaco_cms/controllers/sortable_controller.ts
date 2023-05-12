@@ -9,7 +9,7 @@ export default class extends Controller {
   declare handleValue: string;
   declare inputSelectorValue: string;
 
-  connect() {
+	initialize() {
     new Sortable(this.element, {
       handle: this.handleValue,
       animation: 150,

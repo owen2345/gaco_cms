@@ -1,0 +1,22 @@
+.accordion {
+  .accordion-button {
+    cursor: pointer;
+  }
+  .accordion-actions {
+    margin-top: -42px;
+    position: relative;
+    z-index: 2;
+    float: left;
+  }
+}
+
+
+.fieldset_style {
+  border: 1px dashed #ccc;
+  margin-top: 32px;
+  .legend_style {
+    position: relative;
+    top: -16px;
+    padding: 0 10px;
+  }
+}

@@ -11,7 +11,7 @@ export default class extends Controller {
 	declare inputTarget: HTMLInputElement;
 
 
-  connect() {
+	initialize() {
   	setTimeout(this.parseElement.bind(this), 200); // delay to wait for translatable structure
   }
 
