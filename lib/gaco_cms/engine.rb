@@ -17,8 +17,9 @@ module GacoCms
       end
 
       static_assets = File.join(engine_dir, 'vendor/static')
-      target_path = Rails.root.join('public/assets/gaco_cms')
+      target_path = Rails.root.join('public/gaco_cms')
       unless Dir.exist?(target_path)
+        puts "::::::::#{[target_path, static_assets]}"
         Rails.logger.info '********gaco_cms: copying static assets....'
         FileUtils.mkpath(target_path) unless Dir.exist?(target_path)
         FileUtils.cp_r(File.join(static_assets, '.'), target_path)
