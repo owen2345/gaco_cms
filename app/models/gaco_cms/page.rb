@@ -24,7 +24,6 @@
 #  page_type_id  (page_type_id => simple_cms_page_types.id)
 #
 
-require 'byebug'
 module GacoCms
   class Page < ApplicationRecord
     include BuddyTranslatable

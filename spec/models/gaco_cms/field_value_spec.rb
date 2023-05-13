@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'byebug'
 describe GacoCms::FieldValue, type: :model do
   let(:field) { create(:field) }
 
