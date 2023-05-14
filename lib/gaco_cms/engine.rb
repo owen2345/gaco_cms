@@ -4,8 +4,14 @@ module GacoCms
   class Engine < ::Rails::Engine
     # isolate_namespace GacoCms # when enabled routes are not sharable
 
-    engine_dir = File.expand_path('../../', __dir__)
+    config.before_initialize { |app| copy_csm_assets(app) }
+
     initializer 'gaco_cms.assets.precompile' do |app|
+      copy_csm_assets(app)
+    end
+
+    def copy_csm_assets(app)
+      engine_dir = File.expand_path('../../', __dir__)
       builds_path = File.join(engine_dir, 'app/assets/builds/')
       if app.config.try(:assets)
         app.config.assets.precompile += [
@@ -17,9 +23,8 @@ module GacoCms
       end
 
       static_assets = File.join(engine_dir, 'vendor/static')
-      target_path = Rails.root.join('public/gaco_cms')
+      target_path = app.root.join('public/gaco_cms')
       unless Dir.exist?(target_path)
-        puts "::::::::#{[target_path, static_assets]}"
         Rails.logger.info '********gaco_cms: copying static assets....'
         FileUtils.mkpath(target_path) unless Dir.exist?(target_path)
         FileUtils.cp_r(File.join(static_assets, '.'), target_path)
