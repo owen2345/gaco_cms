@@ -8,13 +8,11 @@ module GacoCms
     helper_method :current_theme
 
     def index
-      render theme_path_for(:index)
     end
 
     def page
       key = params[:page_id]
       @page = Page.by_key(key) || Page.find(key)
-      render theme_path_for(:page)
     end
 
     private
@@ -26,10 +24,6 @@ module GacoCms
     def gaco_set_locale
       session[:gaco_locale] = params[:locale] if params[:locale].present?
       I18n.locale = session[:gaco_locale] if session[:gaco_locale]
-    end
-
-    def theme_path_for(tpl = params[:action])
-      "themes/#{current_theme.key}/#{tpl}"
     end
 
     def current_theme

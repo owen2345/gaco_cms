@@ -46,3 +46,8 @@ The gem is available as open source under the terms of the [MIT License](https:/
     yarn build && yarn build:css && yarn build:css_front
     # TODO: copy static assets into vendor/fontawesome and vendor/tinymce
 ```
+
+## TODOs
+- Migration create default active theme
+- Instead of themes, use themes, use sites (1 site by default)
+- Migration create default page_type :pages, :posts, and sample page + sample post
