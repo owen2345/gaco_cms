@@ -13,6 +13,8 @@ module GacoCms
     def page
       key = params[:page_id]
       @page = Page.by_key(key) || Page.find(key)
+      page_tpl = "gaco_cms/front/page_#{@page.key}"
+      render lookup_context.template_exists?(page_tpl) ? page_tpl : 'page'
     end
 
     private

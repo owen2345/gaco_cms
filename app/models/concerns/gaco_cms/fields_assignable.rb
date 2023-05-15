@@ -18,6 +18,10 @@ module GacoCms
       Rails.cache.fetch(cache_key_locale(:the_value, key), expires_at: Time.current.end_of_day, &callback)
     end
 
+    def default_group
+      @default_group ||= field_groups.where(key: :default).first_or_create(title: 'Basic Fields', key: :default)
+    end
+
     def the_values(key, cache: true)
       callback = proc { field_values.ordered.where(field_key: key).map(&:the_value) }
       return callback.call unless cache

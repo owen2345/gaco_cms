@@ -27,6 +27,26 @@
   var __toESM = (module, isNodeMode) => {
     return __reExport(__markAsModule(__defProp(module != null ? __create(__getProtoOf(module)) : {}, "default", !isNodeMode && module && module.__esModule ? { get: () => module.default, enumerable: true } : { value: module, enumerable: true })), module);
   };
+  var __async = (__this, __arguments, generator) => {
+    return new Promise((resolve, reject) => {
+      var fulfilled = (value) => {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      var rejected = (value) => {
+        try {
+          step(generator.throw(value));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+      step((generator = generator.apply(__this, __arguments)).next());
+    });
+  };
 
   // node_modules/@rails/actioncable/src/adapters.js
   var adapters_default;
@@ -581,6 +601,62 @@
       init_subscription_guarantor();
       init_adapters();
       init_logger();
+    }
+  });
+
+  // app/assets/javascripts/gaco_cms/lib/turbo_request.ts
+  var require_turbo_request = __commonJS({
+    "app/assets/javascripts/gaco_cms/lib/turbo_request.ts"(exports) {
+      var reloadTurboFrames = (frames) => {
+        frames.forEach((frameSelector) => {
+          const frame = document.body.querySelector(frameSelector);
+          if (!frame)
+            return;
+          const src = frame.src;
+          frame.src = null;
+          frame.src = src;
+        });
+      };
+      var closeActiveModal = () => {
+        const modal = document.body.querySelector(":scope .modal.show");
+        if (modal)
+          modal.dispatchEvent(new CustomEvent("close-modal"));
+      };
+      document.addEventListener("turbo:before-fetch-request", (e) => {
+        const target = e.target;
+        e.detail.fetchOptions.headers["turbo-request"] = true;
+        if (e.target.getAttribute("data-auto-update")) {
+          e.detail.fetchOptions.headers["turbo-update"] = e.target.id;
+        }
+      });
+      var parseRequestError = (response) => __async(exports, null, function* () {
+        const result = yield response.clone().text();
+        const body = result.split("<body>")[1].split("</body>")[0];
+        const tpl = `
+	  <div data-controller="gaco-cms-modal"
+	  data-gaco-cms-modal-size-value="modal-lg text-danger" 
+	  data-gaco-cms-modal-self-modal-value="true">${body}</div>
+	`;
+        document.body.insertAdjacentHTML("beforeend", tpl);
+      });
+      document.addEventListener("turbo:before-fetch-response", (e) => {
+        const target = e.target;
+        const sourceTarget = e.target;
+        if (target.id == "turbo_frame_none")
+          target.removeAttribute("src");
+        const response = e.detail.fetchResponse.response;
+        if (response.status != 500) {
+          const closeModal = sourceTarget.getAttribute("data-turbo-request-close-modal");
+          if (closeModal)
+            closeActiveModal();
+          const frames = sourceTarget.getAttribute("data-turbo-request-reload-frame");
+          if (frames)
+            reloadTurboFrames(frames.split(","));
+        } else {
+          e.preventDefault();
+          parseRequestError(response);
+        }
+      });
     }
   });
 
@@ -33644,59 +33720,8 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
     document.getElementById("main-progress-bar").classList.add("invisible");
   });
 
-  // app/assets/javascripts/gaco_cms/lib/turbo_request.ts
-  var reloadTurboFrames = (frames) => {
-    frames.forEach((frameSelector) => {
-      const frame = document.body.querySelector(frameSelector);
-      if (!frame)
-        return;
-      const src = frame.src;
-      frame.src = null;
-      frame.src = src;
-    });
-  };
-  var closeActiveModal = () => {
-    const modal = document.body.querySelector(":scope .modal.show");
-    if (modal)
-      modal.dispatchEvent(new CustomEvent("close-modal"));
-  };
-  document.addEventListener("turbo:before-fetch-request", (e) => {
-    const target = e.target;
-    e.detail.fetchOptions.headers["turbo-request"] = true;
-    if (e.target.getAttribute("data-auto-update")) {
-      e.detail.fetchOptions.headers["turbo-update"] = e.target.id;
-    }
-  });
-  var parseRequestError = async (response) => {
-    const result = await response.clone().text();
-    const body = result.split("<body>")[1].split("</body>")[0];
-    const tpl = `
-	  <div data-controller="gaco-cms-modal"
-	  data-gaco-cms-modal-size-value="modal-lg text-danger" 
-	  data-gaco-cms-modal-self-modal-value="true">${body}</div>
-	`;
-    document.body.insertAdjacentHTML("beforeend", tpl);
-  };
-  document.addEventListener("turbo:before-fetch-response", (e) => {
-    const target = e.target;
-    const sourceTarget = e.target;
-    if (target.id == "turbo_frame_none")
-      target.removeAttribute("src");
-    const response = e.detail.fetchResponse.response;
-    if (response.status != 500) {
-      const closeModal = sourceTarget.getAttribute("data-turbo-request-close-modal");
-      if (closeModal)
-        closeActiveModal();
-      const frames = sourceTarget.getAttribute("data-turbo-request-reload-frame");
-      if (frames)
-        reloadTurboFrames(frames.split(","));
-    } else {
-      e.preventDefault();
-      parseRequestError(response);
-    }
-  });
-
   // app/assets/javascripts/gaco_cms.js
+  var import_turbo_request = __toESM(require_turbo_request());
   var import_tinymce = __toESM(require_tinymce());
 
   // node_modules/@hotwired/stimulus/dist/stimulus.js
@@ -35580,7 +35605,7 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
       this.currentLoc = window.gaco_cms_config.locale;
       try {
         this.dataValue = JSON.parse(this.element.value || "{}");
-      } catch {
+      } catch (e) {
         this.dataValue = { [this.currentLoc]: this.element.value };
       }
       this.dataName = this.element.name;
@@ -35757,17 +35782,17 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
     res["X-CSRF-Token"] = meta2["content"];
     return res;
   };
-  var ajaxRequest = async (path, data = {}, method = "GET", format2 = "text") => {
+  var ajaxRequest = (_0, ..._1) => __async(void 0, [_0, ..._1], function* (path, data = {}, method = "GET", format2 = "text") {
     const reqData = {
       method,
       headers: requestHeaders()
     };
     if (method !== "GET")
       reqData["body"] = data;
-    const response = await fetch(path, reqData);
-    const res = await (format2 == "json" ? response.json() : response.text());
+    const response = yield fetch(path, reqData);
+    const res = yield format2 == "json" ? response.json() : response.text();
     return res;
-  };
+  });
 
   // app/assets/javascripts/gaco_cms/controllers/repeatable_field_controller.ts
   var repeatable_field_controller_default = class extends Controller {
@@ -35776,10 +35801,12 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
         return;
       this.buttonTarget.addEventListener("click", this.loadTpl.bind(this));
     }
-    async loadTpl(event) {
-      event.preventDefault();
-      const res = await ajaxRequest(this.buttonTarget.href);
-      this.listTarget.insertAdjacentHTML("beforeend", res);
+    loadTpl(event) {
+      return __async(this, null, function* () {
+        event.preventDefault();
+        const res = yield ajaxRequest(this.buttonTarget.href);
+        this.listTarget.insertAdjacentHTML("beforeend", res);
+      });
     }
   };
   repeatable_field_controller_default.targets = ["button", "list"];
@@ -35830,20 +35857,24 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
         const input = document.createElement("input");
         input.setAttribute("type", "file");
         input.setAttribute("accept", that.inputTarget.getAttribute("accept"));
-        input.onchange = async function() {
-          await that.uploadFile(input);
+        input.onchange = function() {
+          return __async(this, null, function* () {
+            yield that.uploadFile(input);
+          });
         };
         input.click();
       });
     }
-    async uploadFile(field) {
-      const formData = new FormData();
-      formData.append("file", field.files[0]);
-      const res = await ajaxRequest(window.gaco_cms_config.upload_path, formData, "POST", "json");
-      if (res) {
-        this.inputTarget.value = res.location;
-        this.dispatchChange();
-      }
+    uploadFile(field) {
+      return __async(this, null, function* () {
+        const formData = new FormData();
+        formData.append("file", field.files[0]);
+        const res = yield ajaxRequest(window.gaco_cms_config.upload_path, formData, "POST", "json");
+        if (res) {
+          this.inputTarget.value = res.location;
+          this.dispatchChange();
+        }
+      });
     }
     dispatchChange() {
       this.inputTarget.dispatchEvent(new Event("change"));
@@ -35860,12 +35891,14 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
         that.loadContent();
       });
     }
-    async loadContent() {
-      const res = await ajaxRequest(this.element.href);
-      if (!res)
-        return;
-      document.body.querySelector(this.targetValue).insertAdjacentHTML("beforeend", res);
-      window.scrollTo(0, document.body.scrollHeight);
+    loadContent() {
+      return __async(this, null, function* () {
+        const res = yield ajaxRequest(this.element.href);
+        if (!res)
+          return;
+        document.body.querySelector(this.targetValue).insertAdjacentHTML("beforeend", res);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
     }
   };
   remote_content_controller_default.values = { target: String };
