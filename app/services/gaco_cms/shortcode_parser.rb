@@ -14,7 +14,7 @@ module GacoCms
     def call
       counter = 0
       loop do
-        detected = @content.scan(/#{shortcodes_regex}/).to_a
+        detected = @content.to_s.scan(/#{shortcodes_regex}/).to_a
         break if detected.empty?
         break log("Too many levels detected, skipping after #{counter} levels", mode: :error) if counter > 5
 
