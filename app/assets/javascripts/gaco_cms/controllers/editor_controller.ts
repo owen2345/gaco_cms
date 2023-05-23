@@ -13,7 +13,7 @@ export default class extends Controller {
 	// source code: https://www.tiny.cloud/docs/demo/file-picker/
 	buildEditor() {
 		const that = this;
-		tinyMCE.baseURL = "/assets/gaco_cms/tinymce";
+		tinyMCE.baseURL = "/gaco_cms/tinymce";
 		tinymce.init({
 			selector: `#${this.element.id}`,
 			plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',

@@ -21,6 +21,7 @@ Or install it yourself as:
 $ gem install gaco_cms
 rails railties:install:migrations
 ```
+Add `//= link gaco_cms` in app/assets/config/manifest.js
 
 ## Extra fields
 ```ruby
@@ -51,3 +52,5 @@ The gem is available as open source under the terms of the [MIT License](https:/
 - Migration create default active theme
 - Instead of themes, use themes, use sites (1 site by default)
 - Migration create default page_type :pages, :posts, and sample page + sample post
+- key make single varchar instead of jsonb
+- Move default data created by migration to rake task:initial_data or initializer
