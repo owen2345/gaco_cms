@@ -24,13 +24,8 @@
           #main_nav_bar.collapse.navbar-collapse.justify-content-end.text-white-50
             %ul.navbar-nav
               - GacoCms::PageType.all.title_ordered.each do |ptype|
-                %li.nav-item.dropdown
-                  %button.btn.dropdown-toggle.nav-link{"data-bs-toggle" => "dropdown", type: "button"}= ptype.title
-                  %ul.dropdown-menu{"aria-labelledby" => "dropdownMenuButton1"}
-                    %li
-                      %a.dropdown-item{href: gaco_cms_admin_page_type_pages_path(page_type_id: ptype)} List
-                    %li
-                      %a.dropdown-item{href: new_gaco_cms_admin_page_type_page_path(page_type_id: ptype)} Add New
+                %li.nav-item
+                  %a.nav-link{href: gaco_cms_admin_page_type_pages_path(page_type_id: ptype)}= ptype.title
               %li.nav-item
                 .vr.bg-black{ style: 'height: 100%' }
               %li.nav-item

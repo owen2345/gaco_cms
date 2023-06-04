@@ -54,3 +54,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
 - Migration create default page_type :pages, :posts, and sample page + sample post
 - key make single varchar instead of jsonb
 - Move default data created by migration to rake task:initial_data or initializer
+- Once saved a page content, restore iframe scroll to previous position
+- Add button "Open page" when page form
+- Make page content field larger
+- Add components instead of group fields

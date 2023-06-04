@@ -19,9 +19,11 @@ export default class extends Controller {
 		this.currentLoc = window.gaco_cms_config.locale;
   	try {
 			this.dataValue = JSON.parse(this.element.value || '{}');
-		} catch {
+		} catch(e) {
+			console.log("====failed translation: ", e)
 			this.dataValue = { [this.currentLoc]: this.element.value };
 		}
+		console.log("====initialized translation: ", this.dataValue, this.element.value)
   	this.dataName = this.element.name;
 		this.elementToHide().insertAdjacentHTML('afterend', this.tpl());
   	this.hideElement();

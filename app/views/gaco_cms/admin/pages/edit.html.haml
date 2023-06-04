@@ -1,6 +1,6 @@
 %h2= form_title(@page)
 = form_for(@page, url: url_for(action: :update), html: { enctype: 'multipart/form-data', class: 'row mb-4', 'data-turbo-request-reload-frame': '#page_iframe,#field-groups-renderer,#field-groups-renderer-parent' }) do |f|
-  .col-4.col-xs-12.border-end
+  .col-md-4.col-12.border-end
     .text-end.sticky-top.bg-white.pb-2.mb-2
       = link_to url_for(action: :index), class: 'btn btn-secondary me-2' do
         Cancel
@@ -53,5 +53,5 @@
 
         %turbo-frame{ id: 'field-groups-renderer-parent', src: gaco_cms_admin_field_groups_renderer_index_path(record_type: @page.class.name, record_id: @page.id, parent: true ) }
 
-  .col.col-8
+  .col-md-8.col-12
     %iframe{ src: page_url_for(@page.key), width: '100%', height: '100%', id: 'page_iframe' }
