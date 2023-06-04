@@ -35606,13 +35606,16 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
       try {
         this.dataValue = JSON.parse(this.element.value || "{}");
       } catch (e) {
-        console.log("====failed translation: ", e);
+        console.log("====failed translation: ", e, this.element);
         this.dataValue = { [this.currentLoc]: this.element.value };
       }
-      console.log("====initialized translation: ", this.dataValue, this.element.value);
+      console.log("====initialized translation: ", this.dataValue, this.element.value, this.element);
       this.dataName = this.element.name;
       this.elementToHide().insertAdjacentHTML("afterend", this.tpl());
       this.hideElement();
+    }
+    connect() {
+      console.log("======= translation connected", this.element);
     }
     hideElement() {
       this.element.name = "";
