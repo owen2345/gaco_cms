@@ -10,6 +10,7 @@ module GacoCms
     cattr_accessor(:table_prefix) { 'simple_cms_' } # TODO: rename into gaco_cms_
     cattr_accessor(:locales) { %i[en de es] }
     cattr_accessor(:extra_fields) { {} }
+    cattr_accessor(:home_page_key) { nil }
 
     # @param settings [Hash<:tpl, :translatable, :label, :default_value_tpl?>]
     def self.add_extra_field(key, settings)

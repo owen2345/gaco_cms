@@ -12,9 +12,6 @@
               %code.small= "[#{group.key}]"
             = link_to url_for(action: :render_group, group_id: group), class: 'btn btn-sm btn-outline-primary', 'data-gaco-cms-repeatable-field-target' => 'button' do
               %i.fa.fa-plus-square
-    .accordion{ 'data-gaco-cms-repeatable-field-target': 'list' }
+    .accordion.accordion-flush{ id: "gaco_cms-field-group-#{group.id}", 'data-gaco-cms-repeatable-field-target': 'list', 'data-controller': 'gaco-cms-sortable', 'data-gaco-cms-sortable-handle-value': '.group-sort-btn', 'data-gaco-cms-sortable-input-selector-value': 'input.field-group-no' }
       - (@record.field_values.group_nos_for(group).presence || [999]).each do |group_no|
         = render 'group', group: group, field_values: @record.field_values.eager_load(:field), group_no: group_no
-
--# - if @groups.none?
--#   .alert.alert-info Fields not assigned yet

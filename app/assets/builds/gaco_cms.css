@@ -1,4 +1,8 @@
 @charset "UTF-8";
+.accordion-button {
+  position: initial !important;
+}
+
 /*!
  * Bootstrap v5.1.3 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
@@ -18242,7 +18246,6 @@ readers do not read off random characters that represent icons */
 .accordion .accordion-actions {
   margin-top: -42px;
   position: relative;
-  z-index: 2;
   float: left;
 }
 

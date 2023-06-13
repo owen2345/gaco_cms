@@ -13,3 +13,7 @@ $theme-colors: (
 );
 
 $nav-link-color: #222;
+
+.accordion-button { // Fix overposition of dropdowns
+  position: initial !important;
+}

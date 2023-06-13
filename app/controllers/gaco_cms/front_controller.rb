@@ -8,11 +8,14 @@ module GacoCms
     helper_method :current_theme
 
     def index
+      render :index
     end
 
     def page
       key = params[:page_id]
       @page = Page.by_key(key) || Page.find(key)
+      return index if @page.key == GacoCms::Config.home_page_key
+
       page_tpl = "gaco_cms/front/page_#{@page.key}"
       render lookup_context.template_exists?(page_tpl) ? page_tpl : 'page'
     end

@@ -5,7 +5,7 @@
       = GacoCms::FieldGroup.human_name
     = button_tag class: 'btn btn-primary ms-2' do
       %i.fa.fa-save
-      = GacoCms::FieldGroup.human_name(count: 2)
+      = GacoCms::FieldGroup.human_name.pluralize
 
   = hidden_field_tag :record_id, params[:record_id]
   = hidden_field_tag :record_type, params[:record_type]

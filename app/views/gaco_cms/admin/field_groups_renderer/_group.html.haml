@@ -4,9 +4,12 @@
   - if group.repeat
     .accordion-header
       .accordion-button{'data-bs-target' => "##{accordion_key}", "data-bs-toggle" => "collapse"}
+        = button_tag class: 'btn btn-sm group-sort-btn btn-light', type: :button do
+          %i.fa.fa-arrows-alt
         = check_box_tag :_destroy, '1', false , 'data-controller': 'gaco-cms-deletable_row', 'data-propagate': '._destroy_field', 'data-hide-closest': '.accordion-item', 'data-hideonly': field_values.for_group(group).where(group_no: group_no).any?
+        = "Group: #{group_no}"
 
-  .accordion-collapse.collapse.show{ id: accordion_key }
+  .accordion-collapse.collapse{ id: accordion_key, 'data-bs-parent': "#gaco_cms-field-group-#{group.id}" }
     .accordion-body
       %ul.list-group.list-group-flush
         - group.fields.ordered.each.with_index do |field, _i|

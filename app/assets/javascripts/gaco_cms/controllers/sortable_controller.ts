@@ -19,9 +19,10 @@ export default class extends Controller {
 
   updateFieldValues() {
     if (!this.inputSelectorValue) return;
-
-    this.element.querySelectorAll<HTMLInputElement>(this.inputSelectorValue).forEach((input, index) => {
-      input.value = `${index + 1}`;
+    this.element.querySelectorAll(":scope > *").forEach((group, index) => {
+      group.querySelectorAll<HTMLInputElement>(this.inputSelectorValue).forEach((input) => {
+        input.value = `${index + 1}`;
+      });
     });
   }
 }

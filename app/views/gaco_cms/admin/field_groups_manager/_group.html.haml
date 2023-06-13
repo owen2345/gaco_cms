@@ -10,15 +10,16 @@
         = f.check_box :_destroy, 'data-controller': 'gaco-cms-deletable_row', 'data-propagate': '._destroy_field', 'data-hide-closest': '.accordion-item', 'data-hideonly': group.id
         = button_tag class: 'btn btn-sm group-sort-btn btn-light', type: :button do
           %i.fa.fa-arrows-alt
-        .btn-group.btn-group-sm.ms-2
+        .btn-group.btn-group-sm.ms-2.me-1
           %button.btn.btn-primary.dropdown-toggle{"aria-expanded" => "false", "data-bs-toggle" => "dropdown", type: "button"}
             %i.fa.fa-plus
             = GacoCms::Field.human_name(count: 2)
           %ul.dropdown-menu
             - GacoCms::Field.dropdown_data.each do |v, k|
               %li= link_to(v, url_for(action: :field_tpl, kind: k, parent_name: name), class: 'dropdown-item', data: { controller: 'gaco-cms-remote-content', 'gaco-cms-remote-content-target-value': "##{accordion_key}_fields" })
+        %span.small= group.title
 
-    .accordion-collapse.collapse-effect.show{ id: accordion_key }
+    .accordion-collapse.collapse{ id: accordion_key, 'data-bs-parent': '#field_groups_list' }
       .accordion-body.p-0.mb-3
         .card
           .card-body.bg-light

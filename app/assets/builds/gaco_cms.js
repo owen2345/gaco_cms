@@ -38127,8 +38127,10 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
     updateFieldValues() {
       if (!this.inputSelectorValue)
         return;
-      this.element.querySelectorAll(this.inputSelectorValue).forEach((input, index2) => {
-        input.value = `${index2 + 1}`;
+      this.element.querySelectorAll(":scope > *").forEach((group, index2) => {
+        group.querySelectorAll(this.inputSelectorValue).forEach((input) => {
+          input.value = `${index2 + 1}`;
+        });
       });
     }
   };
