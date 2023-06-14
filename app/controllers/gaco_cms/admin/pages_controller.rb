@@ -8,7 +8,7 @@ module GacoCms
       before_action :set_breadcrumb
 
       def index
-        @pages = @page_type.pages.title_ordered
+        @pages = @page_type.pages.order(updated_at: :desc)
       end
 
       def new

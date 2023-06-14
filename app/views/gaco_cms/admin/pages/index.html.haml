@@ -10,6 +10,8 @@
     %tr
       %th= GacoCms::Page.attr_label(:key)
       %th= GacoCms::Page.attr_label(:title)
+      %th= GacoCms::Page.attr_label(:created_at)
+      %th= GacoCms::Page.attr_label(:updated_at)
       %th
 
   %tbody
@@ -17,6 +19,8 @@
       %tr
         %td= page.key
         %td= page.title
+        %td= I18n.l(page.created_at, format: :short)
+        %td= I18n.l(page.updated_at, format: :short)
         %td.text-end{ style: 'white-space: nowrap;' }
           = link_to '<i class="fa fa-pencil"></i>'.html_safe, url_for(action: :edit, id: page), class: 'btn btn-primary btn-sm'
           = button_to '<i class="fa fa-trash"></i>'.html_safe, url_for(action: :destroy, id: page), class: 'btn btn-danger btn-sm', form_class: 'd-inline', method: :delete, data: { controller: 'form-confirm', confirm: 'Are you sure?' }
