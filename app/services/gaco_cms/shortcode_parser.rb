@@ -184,7 +184,7 @@ module GacoCms
       context = calc_context(nil, attrs)
       return '--PageNotFound--' unless context
 
-      ApplicationHelper.page_url_for(context.id)
+      ApplicationHelper.page_url_for(context.key)
     end
 
     # TODO: add missing test cases
