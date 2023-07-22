@@ -34,6 +34,8 @@ export default class extends Controller {
 		if (meta.filetype === 'file') return '*/*';
 		if (meta.filetype === 'image') return 'image/*';
 		if (meta.filetype === 'media') return 'audio/*,video/*';
+
+		return '*/*';
 	}
 
 	uploadFile(cb, format) {

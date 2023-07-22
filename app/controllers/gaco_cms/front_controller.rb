@@ -23,7 +23,7 @@ module GacoCms
     private
 
     def gaco_set_layout
-      instance_eval(&Config.front_layout)
+      request.headers['Turbo-Frame'] ? false : instance_eval(&Config.front_layout)
     end
 
     def gaco_set_locale

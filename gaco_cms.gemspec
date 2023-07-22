@@ -19,6 +19,6 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
 
-  spec.add_dependency 'buddy_translatable', '>= 1.1.0'
+  spec.add_dependency 'buddy_translatable', '>= 1.1.2'
   spec.add_dependency 'rails', '>= 5.0'
 end
