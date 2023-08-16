@@ -3,6 +3,7 @@
 module GacoCms
   class AdminController < GacoCms::Config.parent_backend_controller.constantize
     include GacoCms::TurboConcern
+    helper GacoCms::ApplicationHelper
     before_action :gaco_check_authentication
     before_action { add_breadcrumb(:home, gaco_cms_admin_path) }
     layout :gaco_set_layout
