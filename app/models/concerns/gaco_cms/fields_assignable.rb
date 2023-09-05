@@ -29,15 +29,27 @@ module GacoCms
       Rails.cache.fetch(cache_key_locale(:the_values, key), expires_at: Time.current.end_of_day, &callback)
     end
 
-    def the_grouped_values(*keys, cache: true)
+    # TODO: refactor complexity
+    # the_grouped_values :name, :title, multiple: %w[slide_photos]
+    def the_grouped_values(*keys, cache: true, multiple: [])
       callback = proc do
-        field_values.where(field_key: keys).grouped.map do |fields|
-          fields.map { |f| [f.field_key, f.the_value] }.to_h
+        values = field_values.where(field_key: keys + multiple)
+        values.pluck(:group_no).uniq.sort.map do |g_no|
+          res = {}
+          values.where(group_no: g_no).each do |value|
+            if multiple.include?(value.field_key.to_sym)
+              res[value.field_key] ||= []
+              res[value.field_key] << value.the_value
+            else
+              res[value.field_key] = value.the_value
+            end
+          end
+          res
         end
       end
       return callback.call unless cache
 
-      cache_key = cache_key_locale(:the_grouped_values, keys.join('-'))
+      cache_key = cache_key_locale(:the_grouped_values2, keys.join('-'))
       Rails.cache.fetch(cache_key, expires_at: Time.current.end_of_day, &callback)
     end
   end
