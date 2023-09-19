@@ -35679,7 +35679,7 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
       tinyMCE.baseURL = "/gaco_cms/tinymce";
       tinymce.init({
         selector: `#${this.element.id}`,
-        plugins: "advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste",
+        plugins: "advlist autolink lists link image preview anchor searchreplace visualblocks code fullscreen insertdatetime media table",
         toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl",
         automatic_uploads: true,
         images_upload_url: window.gaco_cms_config.upload_path,
