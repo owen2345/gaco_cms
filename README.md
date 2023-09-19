@@ -44,7 +44,9 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## Development
 ### Build assets
 ```bash
+    docker-compose run test bash
     yarn build && yarn build:css && yarn build:css_front
+    # add github action to do pre-compilation automatically
     # TODO: copy static assets into vendor/fontawesome and vendor/tinymce
 ```
 
