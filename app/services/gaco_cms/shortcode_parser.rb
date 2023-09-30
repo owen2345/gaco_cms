@@ -53,7 +53,7 @@ module GacoCms
     end
 
     def shortcodes_regex
-      "(\\[(#{shortcodes.keys.join('|')})((\s)((?!\\]).)*|)\\])"
+      "(\\[(#{shortcodes.keys.join('|')})((\s|%)((?!\\]).)*|)\\])"
     end
 
     # @param item [Array[shortcode, code, attrs]]
