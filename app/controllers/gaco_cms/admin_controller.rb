@@ -36,7 +36,7 @@ module GacoCms
     def fix_fields_values_param(param_key)
       values = params[:field_values_attributes]&.values || []
       values.each do |v|
-        v[:value] = {  I18n.locale => v[:value] } unless v[:value].is_a?(Hash)
+        v[:value] = { I18n.locale => v[:value] } unless v[:value].is_a?((ActionController::Parameters))
       end
       params[param_key][:field_values_attributes] = values
     end
