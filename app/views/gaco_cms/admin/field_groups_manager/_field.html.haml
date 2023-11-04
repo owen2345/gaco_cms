@@ -51,3 +51,10 @@
             = f.label :description
             .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': field.description_data.values.any?(&:present?) } }
               = f.text_area :description, class: 'form-control'
+        .tpl
+          = f.label :template
+          .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': field.template.present? } }
+            = f.text_area :template, class: 'form-control', rows: 7
+            .small
+              %a{ href: 'https://github.com/Shopify/liquid', target: '_blank' } Liquid tpl
+              that receives `value` or `values` (if repeatable field).

@@ -35,6 +35,16 @@ GacoCms::Config.add_extra_field(:color, color_settings)
 ```
 
 
+## Shorcodes
+- page_content
+- page_title
+- page_photo
+- page_field
+- page_field_tpl
+- page_img_field
+- page_field_multiple
+- page_grouped_fields
+
 ## Contributing
 Contribution directions go here.
 

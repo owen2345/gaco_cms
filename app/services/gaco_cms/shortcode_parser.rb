@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'liquid'
 module GacoCms
   class ShortcodeParser < ApplicationService # rubocop:disable Metrics/ClassLength
     attr_reader :content, :record, :ignored_shortcodes
@@ -35,12 +36,14 @@ module GacoCms
                    '{photo_yield}</li>"] Or [page_grouped_fields keys="name,photo" page_id=10 content=...'
       tf_sample = '<img src="[theme_field key=\'photo\'] or [theme_field key=\'photo\' group_no=1]" />'
       pf_sample = '[page_photo] or [page_photo page_id=10 style=".."]'
+      pftpl_sample = '[page_field_tpl key=\'photos\']'
       pg_sample = '[page_group key="my_key"] or [page_group key="my_key" page_id=10 wrapper="<div class=\'row\'>{yield}</div>"]'
       {
         page_content: { render: method(:page_content_parser), sample: '[page_content] or [page_content page_id=10]' },
         page_title: { render: method(:page_title_parser), sample: '[page_title] or [page_title page_id=10]' },
         page_photo: { render: method(:page_photo_parser), sample: pp_sample },
         page_field: { render: method(:page_field_parser), sample: pf_sample },
+        page_field_tpl: { render: method(:page_field_tpl_parser), sample: pftpl_sample },
         page_img_field: { render: method(:page_img_field_parser), sample: pif_sample },
         page_field_multiple: { render: method(:page_field_multiple_parser), sample: pmf_sample },
         # page_fields: { render: method(:page_fields_parser), sample:  },
@@ -125,6 +128,20 @@ module GacoCms
       return '--PageNotFound--' unless context
 
       context.the_value(attrs['key'])
+    end
+
+    def page_field_tpl_parser(attrs, _args, context = nil)
+      context = calc_context(context, attrs)
+      return '--PageNotFound--' unless context
+
+      field = context.fields.find_by(key: attrs['key'])
+      return '--GroupKey not found--' unless field
+
+      data = {} # TODO: add multiple groups support
+      data[:values] = context.the_values(field.key) if field.repeat
+      data[:value] = context.the_value(field.key) unless field.repeat
+      template = Liquid::Template.parse(field.template)
+      template.render(**data.stringify_keys)
     end
 
     def page_field_multiple_parser(attrs, _args, context = nil)

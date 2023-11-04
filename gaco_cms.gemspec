@@ -21,4 +21,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'buddy_translatable', '>= 1.1.2'
   spec.add_dependency 'rails', '>= 5.0'
+  spec.add_dependency 'liquid'
 end

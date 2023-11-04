@@ -42,7 +42,7 @@ module GacoCms
         fix_groups_fields
         fix_fields_params
         fields_attrs = [:id, :kind, :key, :repeat, :required, :translatable, :position, :_destroy,
-                        :title, :description, { def_value: permitted_locales }]
+                        :title, :description, :template, { def_value: permitted_locales }]
         params.require(:groups_manager)
               .permit(field_groups_attributes: [:id, :key, :record_id, :record_type, :repeat, :position, :_destroy, :template,
                                                 :title, :description, fields_attributes: fields_attrs])
