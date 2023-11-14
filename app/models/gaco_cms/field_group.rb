@@ -27,7 +27,7 @@ module GacoCms
     include BuddyTranslatable
     translatable :title, :description
 
-    belongs_to :record, polymorphic: true
+    belongs_to :record, polymorphic: true, touch: true
     has_many :fields, -> { ordered }, dependent: :destroy
 
     scope :ordered, -> { order(position: :asc) }

@@ -26,7 +26,7 @@
             .row
               .col-auto
                 = required_label f, :key
-                = f.text_field :key, class: 'form-control', style: 'max-width: 90px', required: true
+                = f.text_field :key, class: 'form-control', style: 'max-width: 130px', required: true
 
               .col
                 = required_label f, :title
@@ -44,11 +44,14 @@
               -#  = f.label :description
               -#  .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': group.description_data.values.any?(&:present?) } }
               -#    = f.text_area :description, value: group.description_data.to_json, class: 'form-control', data: { controller: 'gaco-cms-translatable' }
-
-              .col.col-auto
+            .row
+              .col-md
                 = f.label :template
                 .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': group.template.present? } }
-                  = f.text_area :template, class: 'form-control'
+                  = f.text_area :template, class: 'form-control', rows: 6
+                  .small
+                    %a{ href: 'https://github.com/Shopify/liquid', target: '_blank' } Liquid tpl
+                    that receives `values` variable
 
           .accordion{ id: "#{accordion_key}_fields", data: { controller: 'gaco-cms-sortable', 'gaco-cms-sortable-handle-value': '.accordion-item .sort-btn', 'gaco-cms-sortable-input-selector-value': '.position-field' } }
             - group.fields.ordered.each do |field|

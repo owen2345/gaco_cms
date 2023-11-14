@@ -38,6 +38,7 @@ module GacoCms
     enum kind: KINDS.map { |k| [k, k.to_s] }.to_h
 
     belongs_to :field_group, optional: false
+    # has_one :record, through: :field_group, touch: true (TODO: failed with object 'Record#record' without 'source_type')
     has_many :field_values, dependent: :destroy, inverse_of: :field
     after_update_commit :update_values_key, if: :saved_change_to_key?
 

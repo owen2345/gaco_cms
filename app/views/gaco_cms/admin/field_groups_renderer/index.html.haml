@@ -9,7 +9,7 @@
         - if group.repeat
           .btns
             %small
-              %code.small= "[#{group.key}]"
+              %code.small= "[page_field_group_tpl key=#{group.key}]"
             = link_to url_for(action: :render_group, group_id: group), class: 'btn btn-sm btn-outline-primary', 'data-gaco-cms-repeatable-field-target' => 'button' do
               %i.fa.fa-plus-square
     .accordion.accordion-flush{ id: "gaco_cms-field-group-#{group.id}", 'data-gaco-cms-repeatable-field-target': 'list', 'data-controller': 'gaco-cms-sortable', 'data-gaco-cms-sortable-handle-value': '.group-sort-btn', 'data-gaco-cms-sortable-input-selector-value': 'input.field-group-no' }
