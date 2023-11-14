@@ -28,6 +28,13 @@ module GacoCms
 
       Rails.cache.fetch(cache_key_locale(:the_values, key), expires_at: Time.current.end_of_day, &callback)
     end
+    def the_group_values(key, cache: true)
+      group = field_groups.find_by(key: key)
+      return [] unless group
+
+      multiple = group.fields.where(repeat: true).pluck(:key)
+      the_grouped_values(*group.fields.pluck(:key), multiple: multiple, cache: cache)
+    end
 
     # TODO: refactor complexity
     # the_grouped_values :name, :title, multiple: %w[slide_photos]
