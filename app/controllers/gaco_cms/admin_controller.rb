@@ -7,6 +7,7 @@ module GacoCms
     before_action :gaco_check_authentication
     before_action { add_breadcrumb(:home, gaco_cms_admin_path) }
     layout :gaco_set_layout
+    before_action :gaco_set_locale
     helper_method :ajax_request?
 
     private
@@ -43,6 +44,11 @@ module GacoCms
 
     def gaco_check_authentication
       # TODO: check admin authentication
+    end
+
+    def gaco_set_locale
+      session[:gaco_locale] = params[:locale] if params[:locale].present?
+      I18n.locale = session[:gaco_locale] if session[:gaco_locale]
     end
   end
 end
