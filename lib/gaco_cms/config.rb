@@ -10,11 +10,21 @@ module GacoCms
     cattr_accessor(:table_prefix) { 'simple_cms_' } # TODO: rename into gaco_cms_
     cattr_accessor(:locales) { %i[en de es] }
     cattr_accessor(:extra_fields) { {} }
+    cattr_accessor(:extra_shortcodes) { {} }
     cattr_accessor(:home_page_key) { nil }
 
     # @param settings [Hash<:tpl, :translatable, :label, :default_value_tpl?>]
     def self.add_extra_field(key, settings)
       extra_fields[key] = settings
+    end
+
+    # @examples
+    # GacoCms::Config.add_shortcode(:myshortcode, sample: '[myshortcode]') do |attrs, args|
+    #   puts "::::::::::::#{[attrs:, args:, context:]}"
+    # end
+    # GacoCms::Config.add_shortcode(:myshortcode, tpl: '/gaco_cms/shortcodes/myshortcode', sample: '[myshortcode]')
+    def self.add_shortcode(key, tpl: nil, sample: '', &block)
+      extra_shortcodes[key] = { render: block ? block : tpl, sample: sample }
     end
   end
 end
