@@ -22,8 +22,10 @@ export default class extends Controller {
 	}
 
 	editIconTpl() {
+		if (this.element.parentElement.querySelector('.toggle-field-panel')) return '';
+
 		return `
-			<div>
+			<div class="toggle-field-panel">
 				<button class="btn btn-sm btn-secondary edit-field" type="button">
 					<i class="fa fa-pencil"></i>
 				</button>

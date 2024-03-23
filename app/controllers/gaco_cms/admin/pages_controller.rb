@@ -54,7 +54,7 @@ module GacoCms
       end
 
       def set_page_type
-        @page_type = PageType.find(params[:page_type_id])
+        @page_type = PageType.find_by(key: params[:page_type_id]) || PageType.find(params[:page_type_id])
       end
 
       def set_breadcrumb

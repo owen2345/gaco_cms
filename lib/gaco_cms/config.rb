@@ -8,6 +8,7 @@ module GacoCms
     cattr_accessor(:front_layout) { ->(_controller) { 'layouts/gaco_cms/front' } }
     cattr_accessor(:backend_editor_css) { 'gaco_cms_front' }
     cattr_accessor(:table_prefix) { 'simple_cms_' } # TODO: rename into gaco_cms_
+    cattr_accessor(:admin_title) { 'GacoCMS' }
     cattr_accessor(:locales) { %i[en de es] }
     cattr_accessor(:extra_fields) { {} }
     cattr_accessor(:extra_shortcodes) { {} }
