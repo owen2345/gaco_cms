@@ -28,6 +28,7 @@ module GacoCms
 
       def update
         if @page.update(page_params)
+          flash[:notice] = 'Page saved'
           render inline: ''
         else
           render inline: @page.errors.full_messages.join(', ')
