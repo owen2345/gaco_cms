@@ -7,7 +7,7 @@
                 url: 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.9.6/ace.js',
                 loaded: false,
                 required: true,
-            }, 
+            },
            "beautify-html" : {
                 url: 'https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/beautify-html.min.js',
                 loaded: false,
@@ -17,7 +17,7 @@
                 url: 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.9.6/ext-language_tools.min.js',
                 loaded: false,
                 required: false,
-            }, 
+            },
         }
 
         if(config.autocomplete){
@@ -68,12 +68,12 @@
         // Get Configurations
         const setConfig = (editor) => {
             const supercodeOptions = editor.getParam('supercode');
-        
+
             if (supercodeOptions && typeof supercodeOptions === "object") {
                 for (const key in supercodeOptions) {
                     if (supercodeOptions.hasOwnProperty(key)) {
                         const value = supercodeOptions[key];
-                        
+
                         switch (key) {
                             case 'theme':
                             case 'language':
@@ -109,19 +109,19 @@
                     }
                 }
             }
-            
+
             // Set plugin icon
             Config.icon = editor.ui.registry.getAll().icons[Config.iconName];
             if (!Config.icon) {
                 throw new Error("Supercode Icon name is invalid");
             }
         }
-        
-        // Builds ace editor only on the first run 
+
+        // Builds ace editor only on the first run
         const buildAceEditor = (view) => {
             // Attach Ace Editor to shadow dom to prevent tinymce css affecting it
             view.attachShadow({mode: 'open'})
-            
+
             if(Config.aceCss){
                 const sheet = new CSSStyleSheet()
                 sheet.replaceSync(Config.aceCss);
@@ -197,6 +197,7 @@
                 button.classList = 'tox-tbtn tox-tbtn--enabled';
                 button.innerHTML = `<span class="tox-icon tox-tbtn__icon-wrap">${Config.icon}</span>`;
                 button.onclick = onSave;
+                button.type = 'button';
                 div.append(button);
                 newHeader.append(div);
             }
@@ -210,13 +211,13 @@
             view.style.width = width+'px';
             view.style.height = '100%';
             view.style.position = 'relative';
-            
+
             buildAceEditor(view);
         }
 
         setConfig(editor);
         initDependencies(Config);
-        
+
         const onSaveHandler = () => {
             editor.focus();
             editor.undoManager.transact(function() {
@@ -247,7 +248,7 @@
         const CodeView = {
               onShow: (api) => {
                 const codeView = api.getContainer();
-                
+
                 // On tinymce size change => resize code view
                 if(isScreenSizeChanged){
                     setHeader(codeView.querySelector('.supercode-header'), originalHeader, onSaveHandler);
@@ -260,7 +261,7 @@
                     codeView.style.display = 'flex';
                     codeView.style.flexDirection = 'column';
                     codeView.innerHTML = `<div class="supercode-header"></div><div class="supercode-body"></div>`
-                
+
                     // Ctrl + Space Toggle Shortcut, Escape to Exit Source Code Mode
                     if(Config.shortcut){
                         codeView.addEventListener('keydown', onKeyDownHandler)

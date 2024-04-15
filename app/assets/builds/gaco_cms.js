@@ -35679,8 +35679,8 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
       tinyMCE.baseURL = "/gaco_cms/tinymce";
       tinymce.init({
         selector: `#${this.element.id}`,
-        plugins: "advlist autolink lists link image preview anchor searchreplace visualblocks code fullscreen insertdatetime media table",
-        toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl",
+        plugins: "advlist autolink lists link image preview anchor searchreplace visualblocks code fullscreen insertdatetime media table supercode",
+        toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl supercode",
         automatic_uploads: true,
         images_upload_url: window.gaco_cms_config.upload_path,
         height: this.element.dataset.height || 600,
@@ -35917,8 +35917,10 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
       this.element.previousElementSibling.remove();
     }
     editIconTpl() {
+      if (this.element.parentElement.querySelector(".toggle-field-panel"))
+        return "";
       return `
-			<div>
+			<div class="toggle-field-panel">
 				<button class="btn btn-sm btn-secondary edit-field" type="button">
 					<i class="fa fa-pencil"></i>
 				</button>
@@ -43198,7 +43200,7 @@ Options:${listJoiner}${removedOptions2.join(listJoiner)}` : "";
     }
     tpl(content) {
       return `
-			<div class="modal fade" id="${this.modalId}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+			<div class="modal fade" id="${this.modalId}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static">
 				<div class="modal-dialog ${this.sizeValue}">
 					<div class="modal-content">
 						<div class="modal-header">

@@ -53,6 +53,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Development
 ### Build assets
+Every time assests were changed, run the following command to recompile assets and commit them to the repository.
 ```bash
     docker-compose run test bash
     yarn build && yarn build:css && yarn build:css_front

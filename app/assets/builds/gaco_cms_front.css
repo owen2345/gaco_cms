@@ -18239,3 +18239,7 @@ readers do not read off random characters that represent icons */
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
 }
+
+body.mce-content-body {
+  margin: 8px !important;
+}

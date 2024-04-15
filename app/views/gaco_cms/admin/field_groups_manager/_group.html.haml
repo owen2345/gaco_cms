@@ -48,7 +48,7 @@
               .col-md
                 = f.label :template
                 .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': group.template.present? } }
-                  = f.text_area :template, class: 'form-control', rows: 6
+                  = f.text_area :template, class: 'form-control', rows: 6, 'data-controller': 'gaco-cms-editor'
                   .small
                     %a{ href: 'https://github.com/Shopify/liquid', target: '_blank' } Liquid tpl
                     that receives `values` variable

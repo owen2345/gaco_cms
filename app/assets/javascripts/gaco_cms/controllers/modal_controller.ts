@@ -28,7 +28,7 @@ export default class extends Controller {
 
   tpl(content) {
 		return `
-			<div class="modal fade" id="${this.modalId}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+			<div class="modal fade" id="${this.modalId}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static">
 				<div class="modal-dialog ${this.sizeValue}">
 					<div class="modal-content">
 						<div class="modal-header">

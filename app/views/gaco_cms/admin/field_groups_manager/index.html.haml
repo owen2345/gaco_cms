@@ -3,12 +3,15 @@
     = link_to url_for(action: :group_tpl, record_type: @record.class.name, record_id: @record.id), class: 'btn btn-secondary', data: { controller: 'gaco-cms-remote-content', 'gaco-cms-remote-content-target-value': '#field_groups_list' } do
       %i.fa.fa-plus
       = GacoCms::FieldGroup.human_name
-    = button_tag class: 'btn btn-primary ms-2' do
-      %i.fa.fa-save
-      = GacoCms::FieldGroup.human_name.pluralize
 
   = hidden_field_tag :record_id, params[:record_id]
   = hidden_field_tag :record_type, params[:record_type]
   .accordion#field_groups_list.mb-2{ data: { controller: 'gaco-cms-sortable', 'gaco-cms-sortable-handle-value': '.accordion-item .group-sort-btn', 'gaco-cms-sortable-input-selector-value': '.position-group' } }
     - @groups.each do |group|
       = render 'group', group: group
+
+  %hr
+  .text-end
+    = button_tag class: 'btn btn-primary ms-2' do
+      %i.fa.fa-save
+      = GacoCms::FieldGroup.human_name.pluralize

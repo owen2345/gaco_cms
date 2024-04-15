@@ -4,3 +4,5 @@
 $fa-font-path: 'gaco_cms/fontawesome/webfonts';
 @import '@fortawesome/fontawesome-free/scss/fontawesome';
 @import "@fortawesome/fontawesome-free/scss/solid.scss";
+
+body.mce-content-body { margin: 8px !important; } // fix tinymce margin

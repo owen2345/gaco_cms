@@ -14,6 +14,9 @@
               %li.nav-item
                 %a.nav-link{href: menu[:url]}= menu[:label]
           - else
+            - GacoCms::PageType.all.where(key: ['pages', 'posts']).title_ordered.each do |ptype|
+              %li.nav-item
+                %a.nav-link{href: gaco_cms_admin_page_type_pages_path(page_type_id: ptype)}= ptype.title
             %li.nav-item
               .vr.bg-black{ style: 'height: 100%' }
             %li.nav-item
