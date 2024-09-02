@@ -1,8 +1,8 @@
-%h1= GacoCms::Page.human_name(count: 2)
+%h1= @page_type.title
 
 .text-end
   = link_to(url_for(action: :new), class: 'btn btn-small btn-primary', 'data-controller': 'gaco-cms-modal') do
-    = GacoCms::Page.human_name
+    = t('gaco_cms.admin.common.add')
     %i.fa.fa-plus
 
 %table.table.table-hover
@@ -24,4 +24,4 @@
         %td.text-end{ style: 'white-space: nowrap;' }
           = link_to '<i class="fa fa-pencil"></i>'.html_safe, url_for(action: :edit, id: page), class: 'btn btn-primary btn-sm'
           = button_to '<i class="fa fa-trash"></i>'.html_safe, url_for(action: :destroy, id: page), class: 'btn btn-danger btn-sm', form_class: 'd-inline', method: :delete, data: { controller: 'form-confirm', confirm: 'Are you sure?' }
-          = link_to '<i class="fa fa-eye"></i>'.html_safe, page_url_for(page.id), class: 'btn btn-sm btn-secondary', target: '_blank'
+          = link_to '<i class="fa fa-eye"></i>'.html_safe, page.the_path, class: 'btn btn-sm btn-secondary', target: '_blank'

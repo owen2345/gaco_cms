@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    = display_meta_tags site: 'Gaco CMS'
+    %title= content_for(:title) || "Gaco CMS"
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %meta{:content => "width=device-width,initial-scale=1", :name => "viewport"}/
     = csrf_meta_tags

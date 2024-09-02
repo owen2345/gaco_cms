@@ -18,19 +18,6 @@ describe GacoCms::Page, type: :model do
     it_behaves_like 'field_values_owner', :page
   end
 
-  describe '#all_field_groups' do
-    let!(:parent_group) { create(:field_group, record: page.page_type) }
-    let!(:page_group) { create(:field_group, record: page) }
-
-    it 'includes the field_groups from parent PageType' do
-      expect(page.all_field_groups).to include(parent_group)
-    end
-
-    it 'includes the field_groups from current page' do
-      expect(page.all_field_groups).to include(page_group)
-    end
-  end
-
   describe '#the_content' do
     it 'returns the page content inside the template' do
       expect(page.the_content).to include(page.content)

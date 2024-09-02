@@ -22,5 +22,7 @@ Rails.application.routes.draw do
     # frontend
     get '/', to: 'front#index'
     get 'page/:page_id', as: 'page', to: 'front#page'
+    get ':page_title-:page_id', as: 'titled_page', to: 'front#page'
+    get ':type_title/:page_title-:page_id', as: 'type_titled_page', to: 'front#page'
   end
 end

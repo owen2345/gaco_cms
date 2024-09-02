@@ -10,6 +10,14 @@ module GacoCms
       copy_csm_assets(app)
     end
 
+    initializer 'gaco_cms.append_migrations' do |app|
+      unless app.root.to_s.match root.to_s
+        config.paths['db/migrate'].expanded.each do |expanded_path|
+          app.config.paths['db/migrate'] << expanded_path
+        end
+      end
+    end
+
     def copy_csm_assets(app)
       engine_dir = File.expand_path('../../', __dir__)
       builds_path = File.join(engine_dir, 'app/assets/builds/')

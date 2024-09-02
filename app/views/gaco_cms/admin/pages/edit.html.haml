@@ -8,7 +8,7 @@
       = button_tag class: 'btn btn-primary ms-2' do
         Save
         %i.fa.fa-save
-      = link_to page_url_for(@page.id), class: 'btn btn-info ms-2', target: :_blank do
+      = link_to @page.the_path, class: 'btn btn-info ms-2', target: :_blank do
         View Page
         %i.fa.fa-eye
 

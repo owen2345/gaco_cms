@@ -1,5 +1,5 @@
 # GacoCms
-Short description and motivation.
+GacoCMS is a simple CMS for Rails application. It allows you to create pages with custom fields and themes. It is a vanilla CMS with no other dependencies except `Rails` and `liquid`. 
 
 ## Usage
 How to use my plugin.
@@ -8,19 +8,20 @@ How to use my plugin.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "gaco_cms"
+gem 'gaco_cms', github: 'owen2345/gaco_cms'
 ```
 
 And then execute:
 ```bash
-$ bundle
+$ bundle install
+$ rails db:migrate
 ```
-
-Or install it yourself as:
+Generate config file and basic templates
 ```bash
-$ gem install gaco_cms
-rails railties:install:migrations
+$ rails g gaco_cms:install
 ```
+Check the `config/initilizers/gaco_cms.rb` file to customize the settings, like the controller to manage authentication, the default theme, etc.
+
 Add `//= link gaco_cms` in app/assets/config/manifest.js
 
 ## Extra fields
@@ -34,6 +35,12 @@ color_settings = {
 GacoCms::Config.add_extra_field(:color, color_settings)
 ```
 
+## Sample cms settings
+```ruby
+GacoCms::Config.parent_front_controller = 'ApplicationController'
+GacoCms::Config.parent_backend_controller = 'Admin::BaseController'
+GacoCms::Config.front_layout = ->(_controller) { 'application' }
+```
 
 ## Shorcodes
 - page_content
@@ -53,15 +60,16 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Development
 ### Build assets
-Every time assests were changed, run the following command to recompile assets and commit them to the repository.
+This gem is published with precompiled assets to reduce dependencies and conflicts with the host application. So, every time you make changes to the assets, you need to recompile them and commit to the repository.
 ```bash
     docker-compose run test bash
     yarn build && yarn build:css && yarn build:css_front
-    # add github action to do pre-compilation automatically
-    # TODO: copy static assets into vendor/fontawesome and vendor/tinymce
 ```
+Commit the changes to the repository
 
 ## TODOs
+- add github action to do pre-compilation automatically
+- copy static assets into vendor/fontawesome and vendor/tinymce
 - Migration create default active theme
 - Instead of themes, use themes, use sites (1 site by default)
 - Migration create default page_type :pages, :posts, and sample page + sample post

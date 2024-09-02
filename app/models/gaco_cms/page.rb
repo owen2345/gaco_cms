@@ -37,11 +37,6 @@ module GacoCms
       where_key_with(key).take
     end
 
-    # TODO: deprecated
-    def all_field_groups
-      FieldGroup.union_scope(field_groups, page_type.field_groups)
-    end
-
     def the_content(cache: true)
       callback = proc do
         tpl = template.presence || page_type.template.to_s
@@ -50,7 +45,19 @@ module GacoCms
       end
       return callback.call unless cache
 
-      Rails.cache.fetch(cache_key_locale(:the_content), expires_at: Time.current.end_of_day, &callback)
+      Rails.cache.fetch("#{cache_prefix_for(id)}/the_content", expires_at: Time.current.end_of_day, &callback)
+    end
+
+    def the_path(parented: true, titled: true)
+      if parented
+        Rails.cache.fetch("#{cache_prefix_for(page_type_id)}/the_path", expires_at: Time.current.end_of_day) do
+          Rails.application.routes.url_helpers.gaco_cms_type_titled_page_path(type_title: page_type.title.parameterize, page_title: title.parameterize, page_id: id)
+        end
+      elsif titled
+        Rails.application.routes.url_helpers.gaco_cms_titled_page_path(page_title: title.parameterize, page_id: id)
+      else
+        Rails.application.routes.url_helpers.gaco_cms_page_path(page_id: key)
+      end
     end
   end
 end
