@@ -3,7 +3,7 @@
   name = "groups_manager[field_groups_attributes][#{Time.current.to_i}-#{group.id}]"
   accordion_key = name.parameterize
 = fields_for name, group do |f|
-  .accordion-item
+  .accordion-item.border-0
     .accordion-header
       .accordion-button.bg-light{'data-bs-target' => "##{accordion_key}", 'data-bs-toggle': 'collapse'}
       .accordion-actions.ms-2
@@ -19,10 +19,10 @@
               %li= link_to(v, url_for(action: :field_tpl, kind: k, parent_name: name), class: 'dropdown-item', data: { controller: 'gaco-cms-remote-content', 'gaco-cms-remote-content-target-value': "##{accordion_key}_fields" })
         %span.small= group.title
 
-    .accordion-collapse.collapse.show{ id: accordion_key, 'data-bs-parent': '#field_groups_list' }
+    .accordion-collapse.collapse.show{ id: accordion_key, 'data-bs-parent': '#field_groups_list_disable' }
       .accordion-body.p-0.mb-3
         .card
-          .card-body
+          .card-body.bg-light
             .row
               .col-auto
                 = required_label f, :key
@@ -39,13 +39,7 @@
               .col.col-auto
                 = f.label :repeat, class: 'd-block'
                 = f.check_box :repeat
-
-              -#.col.col-auto
-              -#  = f.label :description
-              -#  .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': group.description_data.values.any?(&:present?) } }
-              -#    = f.text_area :description, value: group.description_data.to_json, class: 'form-control', data: { controller: 'gaco-cms-translatable' }
-            .row
-              .col-md
+              .col.col-auto
                 = f.label :template
                 .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': group.template.present? } }
                   = f.text_area :template, class: 'form-control', rows: 6, 'data-controller': 'gaco-cms-editor'
@@ -53,7 +47,13 @@
                     %a{ href: 'https://github.com/Shopify/liquid', target: '_blank' } Liquid tpl
                     that receives `values` variable
 
-          .mx-2
+              -#.col.col-auto
+              -#  = f.label :description
+              -#  .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': group.description_data.values.any?(&:present?) } }
+              -#    = f.text_area :description, value: group.description_data.to_json, class: 'form-control', data: { controller: 'gaco-cms-translatable' }
+
+
+          .mx-2.mb-3
             %h5 Group Fields
             .accordion{ id: "#{accordion_key}_fields", data: { controller: 'gaco-cms-sortable', 'gaco-cms-sortable-handle-value': '.accordion-item .sort-btn', 'gaco-cms-sortable-input-selector-value': '.position-field' } }
               - group.fields.ordered.each do |field|

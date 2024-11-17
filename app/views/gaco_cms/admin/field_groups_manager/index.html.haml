@@ -1,6 +1,6 @@
 = form_for @record, url: url_for(action: :update, id: @record) , html: { 'data-turbo-request-close-modal': 'true', 'data-turbo-request-reload-frame': params[:reload_frame] } do |_f|
-  .text-end.mb-1.sticky-top.bg-white.p-2
-    = link_to url_for(action: :group_tpl, record_type: @record.class.name, record_id: @record.id), class: 'btn btn-secondary', data: { controller: 'gaco-cms-remote-content', 'gaco-cms-remote-content-target-value': '#field_groups_list' } do
+  .text-start.mb-1.sticky-top.bg-white.p-2
+    = link_to url_for(action: :group_tpl, record_type: @record.class.name, record_id: @record.id), class: 'btn btn-outline-secondary', data: { controller: 'gaco-cms-remote-content', 'gaco-cms-remote-content-target-value': '#field_groups_list' } do
       %i.fa.fa-plus
       = GacoCms::FieldGroup.human_name
 

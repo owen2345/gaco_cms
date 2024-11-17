@@ -1,9 +1,9 @@
 -# locals: { field: Field, parent_name: String }
 :ruby
   accordion_key = "field_item_#{Time.current.to_i}_#{field.id}_#{field.kind}"
-  name = "#{parent_name}fields_attributes[#{accordion_key}]"
+  name = "#{parent_name}[fields_attributes][#{accordion_key}]"
 
-.accordion-item
+.accordion-item.mb-2
   .accordion-header
     .accordion-button{'data-bs-target' => "##{accordion_key}", "data-bs-toggle" => "collapse"}
       = button_tag class: 'btn btn-sm sort-btn btn-light', type: :button do
@@ -40,21 +40,21 @@
             = f.label :position
             = f.number_field :position, class: 'form-control position-field'
         .row
-          .col-6
+          .col-md-4
             - if field.default_value_tpl
               = render field.default_value_tpl, field: field, f: f
             - else
               = f.label :def_value
               .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': field.def_value_data.values.any?(&:present?) } }
                 = f.text_field :def_value, value: field.def_value_data.to_json, class: 'form-control', data: { controller: 'gaco-cms-translatable' }
-          .col-6
+          .col-md-4
             = f.label :description
             .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': field.description_data.values.any?(&:present?) } }
               = f.text_area :description, class: 'form-control'
-        .tpl
-          = f.label :template
-          .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': field.template.present? } }
-            = f.text_area :template, class: 'form-control', rows: 7
-            .small
-              %a{ href: 'https://github.com/Shopify/liquid', target: '_blank' } Liquid tpl
-              that receives `value` or `values` variable (if repeatable field).
+          .tpl.col-md-4
+            = f.label :template
+            .fw{ data: { controller: 'gaco-cms-toggle-field', 'gaco-cms-toggle-field-open-value': field.template.present? } }
+              = f.text_area :template, class: 'form-control', rows: 7
+              .small
+                %a{ href: 'https://github.com/Shopify/liquid', target: '_blank' } Liquid tpl
+                that receives `value` or `values` variable (if repeatable field).
