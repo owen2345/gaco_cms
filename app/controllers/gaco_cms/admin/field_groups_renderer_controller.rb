@@ -3,7 +3,7 @@
 module GacoCms
   module Admin
     class FieldGroupsRendererController < BaseController
-      before_action :set_record, only: %i[index update]
+      before_action :set_record, only: %i[index]
 
       def index
         @groups = @record.field_groups
