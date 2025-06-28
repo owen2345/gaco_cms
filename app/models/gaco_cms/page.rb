@@ -50,7 +50,7 @@ module GacoCms
 
     def the_path(parented: true, titled: true)
       if parented
-        Rails.cache.fetch("#{cache_prefix_for(page_type_id)}/the_path", expires_at: Time.current.end_of_day) do
+        Rails.cache.fetch("#{cache_prefix_for(id)}//the_path", expires_at: Time.current.end_of_day) do
           Rails.application.routes.url_helpers.gaco_cms_type_titled_page_path(type_title: page_type.title.parameterize, page_title: title.parameterize, page_id: id)
         end
       elsif titled
